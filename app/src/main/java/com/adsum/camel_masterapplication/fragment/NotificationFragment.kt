@@ -1,15 +1,12 @@
 package com.adsum.camel_masterapplication.fragment
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.adsum.camel_masterapplication.Adapter.NotificationAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
@@ -27,7 +24,6 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONObject
-import java.util.*
 
 
 class NotificationFragment : Fragment() , NotificationAdapter.OnNotificationClickListener{

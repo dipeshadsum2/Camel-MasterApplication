@@ -3,6 +3,7 @@ package com.adsum.camel_masterapplication.fragment
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -18,7 +19,6 @@ import com.adsum.camel_masterapplication.Adapter.RaceDetailAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
-import com.adsum.camel_masterapplication.Config.Constants.position
 import com.adsum.camel_masterapplication.Model.RaceDetailResponse
 import com.adsum.camel_masterapplication.Model.UpdateDateResponse
 import com.adsum.camel_masterapplication.R
@@ -37,27 +37,27 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class UpdateDateFragment : DialogFragment() {
+class UpdateDateFragment : DialogFragment()  {
 
     private var updateDateBinding: FragmentUpdateDateBinding? = null
     private var raceDetailAdapter: RaceDetailAdapter? = null
     private lateinit var raceDetailBinding: FragmentRaceDetailBinding
-
-
+    var  position : Int=0;
     var treadingContentList: ArrayList<RaceDetailResponse.Data>? = ArrayList()
     var raceid: String? = null
-
-    //  var position:Int? =null
     var cal = Calendar.getInstance()
 
     companion object {
-        fun newInstance(raceId: String, position: Int): UpdateDateFragment {
+        var updateCallback: UpdateDialogInterface? = null
+        fun newInstance(raceId: String, position: Int, updateCallbackMain :UpdateDialogInterface): UpdateDateFragment {
             val fragment: UpdateDateFragment =
                 UpdateDateFragment()
             val args = Bundle()
             fragment.setArguments(args)
             args.putString(Constants.race_id, raceId)
             args.putInt(Constants.position, position)
+             updateCallback = updateCallbackMain
+
             //args.putString("raceid",raceId)
             return fragment
         }
@@ -65,26 +65,33 @@ class UpdateDateFragment : DialogFragment() {
 
     }
 
+    interface UpdateDialogInterface {
+        fun onFinishEditDialog(startdate: String?, endDate: String?, position: Int?)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        Toast.makeText(context,"onCancel",Toast.LENGTH_LONG).show()
+    }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        Toast.makeText(context,"onDismiss",Toast.LENGTH_LONG).show()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         var rootView: View = inflater.inflate(R.layout.fragment_update_date, container, false)
-        // raceid = arguments?.putString("raceid",raceid).toString()
-
-
         raceid = requireArguments().getString(Constants.race_id).toString()
-        position = requireArguments().getInt(Constants.position).toString()
-
-        Log.e("tag", "raceid--" + raceid)
-        Log.e("tag", "position--" + position)
+       // Log.e("tag", "raceid--" + raceid)
+        position = requireArguments().getInt(Constants.position)
+       // Log.e("tag", "position--" + position)
 
 
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
@@ -148,12 +155,6 @@ class UpdateDateFragment : DialogFragment() {
 
         updateDateBinding?.cardView2?.setOnClickListener {
             update()
-
-
-//            treadingContentList?.get(position)?.startDate =updateDateBinding!!.tvStartDateTime.setText("12-1-2022") as String
-//            treadingContentList?.get(position!!)?.endDate =updateDateBinding!!.tvEndDateTime.text as String
-//            raceDetailAdapter?.notifyItemChanged(position!!)
-
         }
 
         return rootView
@@ -161,14 +162,14 @@ class UpdateDateFragment : DialogFragment() {
 
 
     private fun updateDateInView() {
-        val myFormat = "yyyy-MM-dd" // mention the format you need
+        val myFormat = "yyyy-MM-dd hh:mm:ss" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         updateDateBinding?.tvStartDateTime!!.text = sdf.format(cal.getTime())
         //updateDateBinding?.tvEndDateTime!!.text = sdf.format(cal.getTime())
     }
 
     private fun updateDateInView1() {
-        val myFormat = "yyyy-MM-dd" // mention the format you need
+        val myFormat = "yyyy-MM-dd hh:mm:ss" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         updateDateBinding?.tvEndDateTime!!.text = sdf.format(cal.getTime())
         //updateDateBinding?.tvEndDateTime!!.text = sdf.format(cal.getTime())
@@ -212,22 +213,8 @@ class UpdateDateFragment : DialogFragment() {
                 Toast.makeText(getActivity(), "enter endDate", Toast.LENGTH_SHORT)
                     .show();
             } else {
-                // position?.let { raceDetailAdapter?.updateRaceDate(it) }
 
                 updateDate()
-
-                for (i in 0..treadingContentList?.size!!-1) {
-
-                    treadingContentList?.get(position.toInt())?.startDate = "25-02-2022"
-                    treadingContentList?.get(position.toInt())?.endDate = "25-02-2022"
-                    raceDetailAdapter?.notifyItemChanged(position.toInt())
-
-                }
-
-
-
-                dialog?.dismiss()
-
             }
 
         } catch (e: Exception) {
@@ -239,8 +226,6 @@ class UpdateDateFragment : DialogFragment() {
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-
-                //  var raceid:String=CommonFunctions.getPreference(context,Constants.race_id,0).toString()
 
                 var url: String = CamelConfig.WEBURL + CamelConfig.updateRaceSchedule
                 Log.e("tag", "url:-" + url)
@@ -255,10 +240,7 @@ class UpdateDateFragment : DialogFragment() {
                 AndroidNetworking.post(url)
                     .addHeaders(Constants.Authorization, Constants.Authkey)
 
-                    .addBodyParameter(
-                        "fromdate",
-                        updateDateBinding?.tvStartDateTime?.text.toString()
-                    )
+                    .addBodyParameter("fromdate", updateDateBinding?.tvStartDateTime?.text.toString())
                     .addBodyParameter("todate", updateDateBinding?.tvEndDateTime?.text.toString())
                     .addBodyParameter("raceid", raceid)
 
@@ -279,9 +261,11 @@ class UpdateDateFragment : DialogFragment() {
                                 CommonFunctions.showToast(context, res.response)
                                 // getData()
 
-                                raceDetailAdapter?.notifyDataSetChanged()
 
-
+                                updateCallback?.onFinishEditDialog(updateDateBinding?.tvStartDateTime?.text.toString(),
+                                    updateDateBinding?.tvEndDateTime?.text.toString(),position)
+                               // raceDetailAdapter?.notifyDataSetChanged()
+                                dialog?.dismiss()
                             }
 
                         }
@@ -297,64 +281,9 @@ class UpdateDateFragment : DialogFragment() {
         }
     }
 
-
-//    private fun getData(){
-//    try {
-//
-//        if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-//            //raceid = CommonFunctions.getPreference(activity, Constants.ID, 0)
-//            var url: String = CamelConfig.WEBURL + CamelConfig.racelist
-//              Log.e("san","msg"+url)
-//
-////Progress start
-//            CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
-//
-//            val okHttpClient = OkHttpClient.Builder()
-//                .addInterceptor(ChuckerInterceptor(requireActivity()))
-//                .build()
-//
-//            AndroidNetworking.post(url)
-//                .addHeaders(Constants.Authorization,Constants.Authkey)
-//                .setTag(url)
-//                .setPriority(Priority.HIGH)
-//                .build()
-//                .getAsJSONObject(object : JSONObjectRequestListener {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    override fun onResponse(response: JSONObject?) {
-//                        Log.e("san","response:--"+response)
-//                        CommonFunctions.destroyProgressBar()
-//                        var gson = Gson()
-//                        val res = gson.fromJson(
-//                            response.toString(),
-//                            RaceDetailResponse::class.java
-//                        )
-//                        treadingContentList?.addAll(res.data)
-//                        context?.let {
-//                            initRace(it, res.data)
-//                        }
-//
-//                        //raceDetailAdapter?.notifyDataSetChanged(position)
-//                    }
-//
-//                    override fun onError(anError: ANError?) {
-//                        CommonFunctions.destroyProgressBar()
-//                    }
-//                })
-//
-//        }
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//    }
-//}
-//    private fun initRace(context: Context, raceList: ArrayList<RaceDetailResponse.Data>) {
-//
-//        raceDetailAdapter = RaceDetailAdapter(context, raceList, this)
-//        raceDetailBinding.raceRecyclerView.adapter = raceDetailAdapter
-//
-//
-//    }
-
-
+    fun setOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
+        Toast.makeText(context,"abx",Toast.LENGTH_LONG).show()
+    }
 }
 
 

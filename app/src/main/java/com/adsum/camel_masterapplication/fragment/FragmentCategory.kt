@@ -107,12 +107,12 @@ class FragmentCategory : Fragment() {
 
                                             ) {
                                                 //openFragment(FragmentcategoryDetail.newInstance(categoryName.id,position),"categorydetails")
-//                                                openFragment(
-//                                                    FragmentcategoryDetail.newInstance(
-//                                                        categoryName.categoryName,
-//                                                        categoryName.id,
-//                                                        position), "categorydetails"
-//                                                )
+                                                openFragment(
+                                                    FragmentcategoryDetail.newInstance(
+                                                        categoryName.categoryName,
+                                                        categoryName.id,
+                                                        position), "categorydetails"
+                                                )
 
 
 //                                        val bundle = Bundle()

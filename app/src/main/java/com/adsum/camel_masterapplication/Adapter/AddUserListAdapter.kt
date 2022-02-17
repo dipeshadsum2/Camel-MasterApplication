@@ -1,6 +1,7 @@
 package com.adsum.camel_masterapplication.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,11 @@ import com.adsum.camel_masterapplication.R
 
 class AddUserListAdapter(
     var ctx: Context, val userList: ArrayList<AddUserListResponse.Data>,
-    val checkedChangeListener: OnCheckedChangeListener
-)
-    : RecyclerView.Adapter<AddUserListAdapter.ViewHolder>() {
+    val checkedChangeListener: OnCheckedChangeListener,
+    ) : RecyclerView.Adapter<AddUserListAdapter.ViewHolder>() {
 
+     var data:ArrayList<String> = arrayListOf()
+   // var data:String=""
 
 
     class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(
@@ -30,14 +32,13 @@ class AddUserListAdapter(
               Toast.makeText(itemView.context, user_list.text, Toast.LENGTH_SHORT).show()
           }
         }
-        fun bind(userList: AddUserListResponse.Data, position: Int, click: OnCheckedChangeListener)
+        fun bind(userList: AddUserListResponse.Data, position: Int, click:OnCheckedChangeListener)
+
         {
            checkbox.setOnClickListener{
                click.OnCheckedChangeListener(userList,position)
            }
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,10 +55,9 @@ class AddUserListAdapter(
 
         checkedChangeListener.let { holder.bind(userlist,position,it) }
 
-
         if (userlist.ischecked){
             holder.checkbox.setBackgroundResource(R.drawable.checkbox_checked);
-          //  holder.checkbox.isChecked = true
+        //  holder.checkbox.isChecked = true
         }else{
             holder.checkbox.setBackgroundResource(R.drawable.unchecked);
         }
@@ -66,7 +66,7 @@ class AddUserListAdapter(
             notifyDataSetChanged()
         }
     }
-    fun selectUser(tag: Int?) {
+    fun selectUserList(tag: Int?) {
         for(i in 0..userList.size-1){
             if (tag==1){
                 userList[i].ischecked=true
@@ -78,16 +78,29 @@ class AddUserListAdapter(
         notifyDataSetChanged()
     }
 
+    fun selectUser() : ArrayList<String> {
+        for (i in 0..userList.size - 1) {
+
+            if (userList[i].ischecked == true) {
+                this.data = (data + userList[i].userId) as ArrayList<String>
+            //Log.e("tag", "data--" + this.data)
+            }
+        }
+        return data
+    }
+
+
+
+
     override fun getItemCount(): Int {
         return userList.size
     }
 
-    interface OnCheckedChangeListener{
-        fun OnCheckedChangeListener(userList: AddUserListResponse.Data,position: Int)
+    interface OnCheckedChangeListener {
+        fun OnCheckedChangeListener(userList: AddUserListResponse.Data, position: Int)
+
 
     }
-
-
 
 }
 

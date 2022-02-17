@@ -10,9 +10,11 @@ import androidx.fragment.app.FragmentTransaction
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.fragment.RaceDetailFragment
 import com.adsum.camel_masterapplication.databinding.ActivityAdminDashboardBinding
+import com.adsum.camel_masterapplication.fragment.AddUserFragment
 
 
 import com.adsum.camel_masterapplication.fragment.FragmentCamel
+import com.adsum.camel_masterapplication.fragment.FragmentUserDetails
 
 class AdminDashboardActivity : AppCompatActivity() {
     // private lateinit var adminDashboardBinding:AdminDashboardActivity
@@ -32,9 +34,25 @@ class AdminDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.imageAdduser.setOnClickListener{
+            binding.imageAdd.visibility = View.VISIBLE
+            fragment = AddUserFragment()
+            val textview = findViewById(R.id.tv_titlePage) as TextView
+            textview.setText(" ")
+
+            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+            ft.replace(R.id.frameLayout, fragment)
+            ft.commit()
+        }
+
 
         binding.tvUserDetails.setOnClickListener {
+            binding.imageAdduser.visibility = View.VISIBLE
             binding.tvTitlePage.setText("User Detail")
+            fragment= FragmentUserDetails()
+            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+            ft.replace(R.id.frameLayout, fragment)
+            ft.commit()
         }
 
         binding.tvCamelDetails.setOnClickListener {

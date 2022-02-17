@@ -1,6 +1,5 @@
 package com.adsum.camel_masterapplication.fragment
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -28,15 +27,15 @@ import okhttp3.OkHttpClient
 import org.json.JSONObject
 
 
-class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListener {
+class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListener,
+    UpdateDateFragment.UpdateDialogInterface {
+
     private lateinit var raceDetailBinding: FragmentRaceDetailBinding
     private var updateDateBinding: FragmentUpdateDateBinding?=null
     private lateinit var raceid:String
     private lateinit var raceDetailAdapter: RaceDetailAdapter
-   // private  var date: RaceDetailResponse ?= null
 
-
-    var treadingContentList: ArrayList<RaceDetailResponse.Data>? = ArrayList()
+    //var treadingContentList: ArrayList<RaceDetailResponse.Data>? = ArrayList()
     private lateinit var rootView: View
 
     companion object {
@@ -104,7 +103,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
                                 response.toString(),
                                 RaceDetailResponse::class.java
                             )
-                            treadingContentList?.addAll(res.data)
+                           // treadingContentList?.addAll(res.data)
                            // date = res.data
                             context?.let {
                                 initRace(it, res.data)
@@ -239,40 +238,22 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
         position: Int,
         raceid: String
     ) {
-        var dialog =UpdateDateFragment.newInstance(raceList.raceId,position)
+        var dialog = UpdateDateFragment.newInstance(raceList.raceId, position, this)
 
 
         dialog.show(
             requireFragmentManager(),
             "updateFragment"
         )
-       // showDialogueInvite(position)
 
-//           treadingContentList?.get(position)?.startDate ="25-02-2022"
-//        treadingContentList?.get(position)?.endDate ="25-02-2022"
-//            raceDetailAdapter.notifyItemChanged(position)
-    }
-
-
-
-
-
-
-    private fun showDialogueInvite(position: Int):Dialog{
-        val bottomSheet = context?.let { AlertDialog.Builder(it) }
-        val view = View.inflate(context, R.layout.fragment_update_date, null)
-        val builder = android.app.AlertDialog.Builder(requireActivity())
-        bottomSheet?.setView(view)
-
-        bottomSheet?.show()
-        val dialog = builder.create()
-        dialog.window!!.setBackgroundDrawableResource(R.drawable.round_shape)
-        return dialog
     }
 
     override fun OnUserClickListener(raceList: RaceDetailResponse.Data, position: Int) {
         openFragment1(
-            AddUsersFragment.newInstance(),"userList")
+            AddUserListFragment.newInstance(
+                raceList.raceId,
+                position
+            ),"userList")
     }
 
     fun openFragment1(fragment: Fragment?, name: String) {
@@ -282,6 +263,11 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
         transaction?.commit()
     }
 
+    override fun onFinishEditDialog(startdate: String?, endDate: String?, position: Int?) {
+        //Toast.makeText(context,""+startdate,Toast.LENGTH_LONG).show()
+
+        raceDetailAdapter.updateDate(startdate,endDate,position)
+    }
 
 
 }

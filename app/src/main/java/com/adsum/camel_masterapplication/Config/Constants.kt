@@ -5,7 +5,7 @@ object Constants {
     val logintime="logintime"
     val isfromrace="isfromrace"
     val from="from"
-    val nameofparti="name_of_participant"
+    val name_of_participant="name_of_participant"
     val isRace="isRace"
     val isRaceFromHistory="isRaceFromHistory"
     val race_name="race_name"
@@ -13,6 +13,8 @@ object Constants {
     val round_name="round_name"
     val isFromHistory="isFromHistory"
     val month = "month"
+
+    val camelno = "camelno"
     val rc_id="rc_id"
     val rl_id="rl_id"
     val rc_gender="rc_gender"

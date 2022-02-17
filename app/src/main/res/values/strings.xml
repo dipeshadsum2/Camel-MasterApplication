@@ -69,6 +69,8 @@
     <string name="camel_no">جمل لا</string>
     <string name="male">جعدان</string>
     <string name="female">ابكار</string>
+    <string name="mobile_no">رقم المحمول</string>
+    <string name="name_of_participant">اسم المشترك</string>
     <string name="user_detail">User Detail</string>
     <string name="camel_detail">Camel Detail</string>
     <string name="race_detail">Race Detail</string>
@@ -85,4 +87,6 @@
     <string name="title_archive">ارشيف المشاركة</string>
     <string name="deselect">deselect All</string>
     <string name="select">select All</string>
+    <string name="role">وظيفة</string>
+    <string name="save">حفظ</string>
 </resources>

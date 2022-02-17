@@ -21,7 +21,6 @@ import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.LogoutResponse
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.fragment.*
-import com.adsum.camel_masterapplication.fragment.FragmentHome.Companion.newInstance
 
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority

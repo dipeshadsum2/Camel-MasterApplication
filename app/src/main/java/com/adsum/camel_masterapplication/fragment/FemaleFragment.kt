@@ -303,7 +303,7 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-                var url: String = CamelConfig.WEBURL + CamelConfig.remove + id
+                var url: String = CamelConfig.WEBURL + CamelConfig.removeCamel + id
 //Progress start
                 CommonFunctions.createProgressBar(context, getString(R.string.please_wait))
 

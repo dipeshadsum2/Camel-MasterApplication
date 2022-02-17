@@ -11,7 +11,8 @@ data class AddUserListResponse(
 ){
     data class Data(
         @SerializedName("name_of_participant") val nameOfParticipant: String = "",
-        var ischecked:Boolean = false
+        var ischecked:Boolean = false,
+        @SerializedName("user_id") val userId: String = ""
 //        @SerializedName("block_user") val blockUser: String = "",
 //        @SerializedName("camel_no") val camelNo: String = "",
 //        @SerializedName("ID") val iD: String = "",
@@ -20,7 +21,7 @@ data class AddUserListResponse(
 //
 //        @SerializedName("role") val role: String = "",
 //        @SerializedName("user_email") val userEmail: String = "",
-//        @SerializedName("user_id") val userId: String = "",
+
 //        @SerializedName("user_login") val userLogin: String = ""
     )
 }

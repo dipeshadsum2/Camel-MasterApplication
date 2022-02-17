@@ -51,6 +51,11 @@ object CommonFunctions {
         ) { dialog, which -> dialog.dismiss() }
         alertDialog.show()
     }
+    fun validateEmailAddress(email: String?): Boolean {
+        val EMAIL_ADDRESS_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
+        return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
+    }
 
 
 

@@ -2,9 +2,7 @@ package com.adsum.camel_masterapplication.fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -289,7 +287,7 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-                var url: String = CamelConfig.WEBURL + CamelConfig.remove + id
+                var url: String = CamelConfig.WEBURL + CamelConfig.removeCamel + id
 //Progress start
                 CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 

@@ -3,6 +3,7 @@ package com.adsum.camel_masterapplication.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,11 @@ import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.AddUserListResponse
+import com.adsum.camel_masterapplication.Model.SelectedUserResponse
 import com.adsum.camel_masterapplication.R
+import com.adsum.camel_masterapplication.databinding.FragmentAddUserlistBinding
 
-import com.adsum.camel_masterapplication.databinding.FragmentAddUsersBinding
+
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -25,27 +28,35 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONObject
 import com.adsum.camel_masterapplication.databinding.ItemAddUsersBinding
+import com.androidnetworking.interfaces.JSONArrayRequestListener
+import org.json.JSONArray
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class AddUsersFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
+class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
 
     private lateinit var addUserListAdapter: AddUserListAdapter
     private  var itemAddUsersBinding: ItemAddUsersBinding? =null
-    private var addUsersBinding: FragmentAddUsersBinding?=null
+    private var addUsersBinding: FragmentAddUserlistBinding?=null
     private lateinit var rootView: View
     lateinit var button : Button
-    private lateinit var checkboxlist : ArrayList<AddUserListResponse.Data>
+   // var data = addUserListAdapter.selectUser()
+   // var  position : Int=0;
+    private lateinit var raceid : String
+
 
 
     companion object {
         var resmain=AddUserListResponse()
 
-        fun newInstance(
-        ): AddUsersFragment {
-            val fragment: AddUsersFragment =
-                AddUsersFragment()
+        fun newInstance(raceId: String, position: Int): AddUserListFragment {
+            val fragment: AddUserListFragment =
+                AddUserListFragment()
             val args = Bundle()
             fragment.setArguments(args)
+            args.putString(Constants.race_id,raceId)
+            //args.putInt(Constants.position, position)
             return fragment
         }
     }
@@ -64,8 +75,11 @@ class AddUsersFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        addUsersBinding = FragmentAddUsersBinding.inflate(inflater, container, false)
+        addUsersBinding = FragmentAddUserlistBinding.inflate(inflater, container, false)
         rootView = addUsersBinding!!.root
+
+        raceid = requireArguments().getString(Constants.race_id).toString()
+       // position=requireArguments().getInt(position)
 
         // getUser()
         return rootView
@@ -75,11 +89,12 @@ class AddUsersFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         getUser()
 
         addUsersBinding?.tvSelectAll?.setTag(1)
         addUsersBinding?.tvSelectAll?.setOnClickListener {
-            addUserListAdapter.selectUser(addUsersBinding?.tvSelectAll?.getTag() as Int?)
+            addUserListAdapter.selectUserList(addUsersBinding?.tvSelectAll?.getTag() as Int?)
             if(addUsersBinding?.tvSelectAll?.getTag()==1){
                 addUsersBinding?.tvSelectAll?.setTag(0)
                 addUsersBinding?.tvSelectAll?.setText(getString(R.string.deselect))
@@ -92,17 +107,74 @@ class AddUsersFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
         }
 
         addUsersBinding?.tvAdd?.setOnClickListener {
+           // addUserListAdapter.selectUser()
+            SelectedUsers()
 
 
-
-
-            
 
         }
     }
+    private fun SelectedUsers() {
+        try {
+
+            if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
+                var url:String = CamelConfig.WEBURL + CamelConfig.selectedUserList+raceid
+
+
+                Log.e("san", "url:--" + url)
+//Progress start
+                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(ChuckerInterceptor(requireActivity()))
+                    .build()
+
+                AndroidNetworking.post(url)
+                    .addBodyParameter("aselect_user", addUserListAdapter.selectUser().toString())
+                    .addBodyParameter("race_id", raceid.toString())
+                    .addHeaders(Constants.Authorization, Constants.Authkey)
+                    .setTag(url)
+                    //.setOkHttpClient(okHttpClient)
+                    .setPriority(Priority.HIGH)
+                    .build()
+//                    .getAsJSONArray(object :JSONArrayRequestListener{
+//                        override fun onResponse(response: JSONArray?) {
 
 
 
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+
+                            Log.e("san", "response:--" + response)
+                            //Destroy Progressbar
+                            CommonFunctions.destroyProgressBar()
+                            var gson = Gson()
+
+                            val res =  gson.fromJson(
+                                response.toString(),
+                                SelectedUserResponse::class.java
+                            )
+
+                            if (res.status == 1) {
+                                CommonFunctions.showToast(activity, res.response)
+                               // raceDetailAdapter.deleterace(position)
+                            } else {
+                                CommonFunctions.showToast(activity, res.response)
+                            }
+
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            CommonFunctions.destroyProgressBar()
+                        }
+
+                    })
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     private fun getUser(){
         try {
@@ -164,8 +236,13 @@ class AddUsersFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListener{
     }
 
     override fun OnCheckedChangeListener(userList: AddUserListResponse.Data, position: Int) {
-        TODO("Not yet implemented")
+        //addUserListAdapter.selectUser()
+
     }
+
+//    override fun getSelectedOrderList(list: ArrayList<String>) {
+//        addUserListAdapter.selectUser()
+//    }
 
 
 }

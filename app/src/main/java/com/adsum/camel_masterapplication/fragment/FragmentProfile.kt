@@ -383,7 +383,7 @@ class FragmentProfile : Fragment() {
                     .addHeaders(Constants.Authorization, Constants.Authkey)
                     .addBodyParameter(Constants.user_id, user_id.toString())
                     .addBodyParameter(
-                        Constants.nameofparti,
+                        Constants.name_of_participant,
                         binding.etSubscribername.text.toString()
                     )
                     .addBodyParameter(Constants.email, binding.etEmail.text.toString())

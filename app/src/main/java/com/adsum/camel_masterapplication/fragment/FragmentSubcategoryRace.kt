@@ -2,7 +2,6 @@ package com.adsum.camel_masterapplication.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -450,7 +449,7 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-                var url: String = CamelConfig.WEBURL + CamelConfig.removecamel + id
+                var url: String = CamelConfig.WEBURL + CamelConfig.remove + id
 //Progress start
                 CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 

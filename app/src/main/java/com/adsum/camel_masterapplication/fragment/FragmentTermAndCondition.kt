@@ -7,16 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.adsum.camel_masterapplication.Adapter.NotificationAdapter
 import com.adsum.camel_masterapplication.Adapter.TermConditionDetailAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
-import com.adsum.camel_masterapplication.Model.NotificationErrorResponse
-import com.adsum.camel_masterapplication.Model.NotificationResponse
 import com.adsum.camel_masterapplication.Model.TermConditionResponse
 import com.adsum.camel_masterapplication.R
-import com.adsum.camel_masterapplication.databinding.FragmentNotificationBinding
 import com.adsum.camel_masterapplication.databinding.FragmentTermAndConditionBinding
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority

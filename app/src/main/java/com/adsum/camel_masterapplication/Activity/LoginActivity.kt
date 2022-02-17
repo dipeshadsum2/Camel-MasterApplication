@@ -17,7 +17,6 @@ import com.adsum.camel_masterapplication.Config.Constants.NO_DATA
 import com.adsum.camel_masterapplication.Config.Constants.SPACE
 import com.adsum.camel_masterapplication.Model.LoginResponse
 
-import com.adsum.camel_masterapplication.Model.LoginerrorResponse
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.ActivityLoginBinding
 import com.adsum.camel_masterapplication.utils.App
