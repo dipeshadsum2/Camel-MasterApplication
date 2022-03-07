@@ -37,73 +37,68 @@ import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 class DashboardActivity : AppCompatActivity() {
-
     private var timer: Timer? = null
     private var content: FrameLayout? = null
     private var logintime : String = ""
     private var user_id by Delegates.notNull<String>()
-    private val mOnNavigationItemSelectedListener =
-        object : BottomNavigationView.OnNavigationItemSelectedListener {
-
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-
-                        val fragment = FragmentHome()
-                        addFragment(fragment)
-                        val textview = findViewById(R.id.title_page) as TextView
-                        textview.setText(R.string.title_home)
-                        val imageView = findViewById(R.id.title_image) as ImageView
-                        imageView.setImageResource(R.drawable.ic_home_black_24dp)
-                        return true
-                    }
-                    R.id.navigation_camel -> {
-                        val fragment = FragmentCamel()
-                       // addFragment(fragment)
-                        val textview = findViewById(R.id.title_page) as TextView
-                        textview.setText(R.string.title_camel)
-                        val imageView = findViewById(R.id.title_image) as ImageView
-                        imageView.setImageResource(R.drawable.ic_camel_black_24dp)
-                        return true
-                    }
-                    R.id.navigation_race -> {
-                        val fragment = FragmentRace()
-                        addFragment(fragment)
-                        val textview = findViewById(R.id.title_page) as TextView
-                        textview.setText(R.string.title_race)
-                        val imageView = findViewById(R.id.title_image) as ImageView
-                        imageView.setImageResource(R.drawable.ic_race_black_24dp)
-                        return true
-                    }
-                    R.id.navigation_history -> {
-                        val fragment = FragmentHistory()
-                        addFragment(fragment)
-                        val textview = findViewById(R.id.title_page) as TextView
-                        textview.setText(R.string.title_history)
-                        val imageView = findViewById(R.id.title_image) as ImageView
-                        imageView.setImageResource(R.drawable.ic_history_black_24dp)
-                        return true
-                    }
-                    R.id.profile -> {
-                        val fragment = FragmentProfile()
-                       // addFragment(fragment)
-                        val textview = findViewById(R.id.title_page) as TextView
-                        textview.setText(R.string.title_profile)
-                        val imageView = findViewById(R.id.title_image) as ImageView
-                        imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
-                        return true
-                    }
-                }
-                return false
-            }
-
-        }
-
+//    private val mOnNavigationItemSelectedListener =
+//        object : BottomNavigationView.OnNavigationItemSelectedListener {
+//            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+//                when (item.itemId) {
+//                    R.id.navigation_home -> {
+//
+//                        val fragment = FragmentHome()
+//                        addFragment(fragment)
+//                        val textview = findViewById(R.id.title_page) as TextView
+//                        textview.setText(R.string.title_home)
+//                        val imageView = findViewById(R.id.title_image) as ImageView
+//                        imageView.setImageResource(R.drawable.ic_home_black_24dp)
+//                        return true
+//                    }
+//                    R.id.navigation_camel -> {
+//                        val fragment = FragmentCamel()
+//                       // addFragment(fragment)
+//                        val textview = findViewById(R.id.title_page) as TextView
+//                        textview.setText(R.string.title_camel)
+//                        val imageView = findViewById(R.id.title_image) as ImageView
+//                        imageView.setImageResource(R.drawable.ic_camel_black_24dp)
+//                        return true
+//                    }
+//                    R.id.navigation_race -> {
+//                        val fragment = FragmentRace()
+//                        addFragment(fragment)
+//                        val textview = findViewById(R.id.title_page) as TextView
+//                        textview.setText(R.string.title_race)
+//                        val imageView = findViewById(R.id.title_image) as ImageView
+//                        imageView.setImageResource(R.drawable.ic_race_black_24dp)
+//                        return true
+//                    }
+//                    R.id.navigation_history -> {
+//                        val fragment = FragmentHistory()
+//                        addFragment(fragment)
+//                        val textview = findViewById(R.id.title_page) as TextView
+//                        textview.setText(R.string.title_history)
+//                        val imageView = findViewById(R.id.title_image) as ImageView
+//                        imageView.setImageResource(R.drawable.ic_history_black_24dp)
+//                        return true
+//                    }
+//                    R.id.profile -> {
+//                        val fragment = FragmentProfile()
+//                       // addFragment(fragment)
+//                        val textview = findViewById(R.id.title_page) as TextView
+//                        textview.setText(R.string.title_profile)
+//                        val imageView = findViewById(R.id.title_image) as ImageView
+//                        imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
+//                        return true
+//                    }
+//                }
+//                return false
+//            }
+//        }
     /**
      * add/replace fragment in container [framelayout]
      */
      fun FragmentCamel(){
-
         //val fragment = FragmentCamel()
         openFragment(FragmentCamel.newInstance("", ""), "FragmentCamel")
         val textview = findViewById(R.id.title_page) as TextView
@@ -111,7 +106,6 @@ class DashboardActivity : AppCompatActivity() {
         val imageView = findViewById(R.id.title_image) as ImageView
         imageView.setImageResource(R.drawable.ic_camel_black_24dp)
         return
-
     }
      fun FragmentProfile(){
         // val fragment = FragmentProfile()
@@ -122,7 +116,6 @@ class DashboardActivity : AppCompatActivity() {
         val imageView = findViewById(R.id.title_image) as ImageView
         imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
         return
-
     }
      fun FragmentNotification(){
         // val fragment = FragmentProfile()
@@ -131,7 +124,7 @@ class DashboardActivity : AppCompatActivity() {
         val textview = findViewById(R.id.title_page) as TextView
         textview.setText(R.string.title_profile)
         val imageView = findViewById(R.id.title_image) as ImageView
-        imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
+        imageView.setImageResource(R.drawable.ic_baseline_notifications_24)
         return
     }
      fun FragmentParticipant(){
@@ -144,17 +137,6 @@ class DashboardActivity : AppCompatActivity() {
         imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
         return
     }
-    public fun FragmentControlPanel(){
-        // val fragment = FragmentProfile()
-        //addFragment(fragment)
-       // openFragment(AdminDashboardActivity.newInstance("", ""), "ControlPanelFragment")
-        val textview = findViewById(R.id.title_page) as TextView
-        textview.setText(R.string.title_profile)
-        val imageView = findViewById(R.id.title_image) as ImageView
-        imageView.setImageResource(R.drawable.ic_baseline_account_circle_24)
-        return
-    }
-
     fun fragmentRaceSchedule() {
         openFragment(FragmentRaceSchedule.newInstance("", ""), "FragmentRaceSchedule")
         val textview = findViewById(R.id.title_page) as TextView
@@ -165,6 +147,8 @@ class DashboardActivity : AppCompatActivity() {
         openFragment(FragmentArchive.newInstance("",""),"FragmentHistory")
         val textview = findViewById(R.id.title_page) as TextView
         textview.setText(R.string.title_archive)
+        val imageView = findViewById(R.id.title_image) as ImageView
+        imageView.setImageResource(R.drawable.ic_baseline_archive_24)
         return
     }
     fun fragmentTermsCondition(){
@@ -173,31 +157,12 @@ class DashboardActivity : AppCompatActivity() {
         textview.setText(R.string.title_archive)
         return
     }
-
-
-
     fun openFragment(fragment: Fragment?, name: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.framee, fragment!!)
         transaction.addToBackStack(name)
         transaction.commit()
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
@@ -209,30 +174,21 @@ class DashboardActivity : AppCompatActivity() {
             .addToBackStack(fragment.javaClass.getSimpleName())
             .commit()
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun logout() {
         try {
-
             if (CommonFunctions.checkConnection(this)) {
-
                 var url: String = CamelConfig.WEBURL + CamelConfig.logout
                 val mParams: HashMap<String, String> = HashMap()
                 CommonFunctions.createProgressBar(this, getString(R.string.please_wait))
-                val okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor(ChuckerInterceptor(this))
-                    .build()
-
                 AndroidNetworking.post(url)
                     .addHeaders(Constants.Authorization, Constants.Authkey)
-//                    .addPathParameter(mParams)
                     .addBodyParameter(Constants.user_id, user_id)
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
@@ -256,16 +212,12 @@ class DashboardActivity : AppCompatActivity() {
                             }
 
                         }
-
                         override fun onError(anError: ANError?) {
                             CommonFunctions.destroyProgressBar()
                             CommonFunctions.showToast(this@DashboardActivity, anError.toString())
                         }
                     })
-
             }
-
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -277,7 +229,6 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-
         supportActionBar?.hide()
 
         if(CommonFunctions.getPreference(this, Constants.isLogin, false)){
@@ -286,23 +237,22 @@ class DashboardActivity : AppCompatActivity() {
             var currenttime=System.currentTimeMillis()/10000
             Log.e("San",currenttime.toString()+ ",,,"+date.time/10000);
             var usetime=currenttime-date.time
-            var mins= usetime / (1000 * 60) % 60
-            if(mins>=1){
-                logout()
-            }
+//            var mins= usetime / (1000 * 60) % 60
+//            if(mins>=1){
+//                logout()
+//            }
         }
-        timerstart()
-
+//        timerstart()
         content = findViewById(R.id.framee) as FrameLayout
-        val navigation = findViewById(R.id.bottomnavigation) as BottomNavigationView
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        navigation.selectedItemId = R.id.navigation_home
+//        val navigation = findViewById(R.id.bottomnavigation) as BottomNavigationView
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+//        navigation.selectedItemId = R.id.navigation_home
         user_id = CommonFunctions.getPreference(this, Constants.ID, "").toString()
         val imageButton = findViewById(R.id.logout) as ImageButton
         imageButton.setOnClickListener(View.OnClickListener {
             logout()
         })
-        val fragment = FragmentRace()
+        val fragment = FragmentHome()
         addFragment(fragment)
     }
 
@@ -323,8 +273,6 @@ class DashboardActivity : AppCompatActivity() {
          val logoutTimeTask = LogOutTimerTask()
          timer!!.schedule(logoutTimeTask, 2000) //auto logout in 5 minutes
      }
-
-
      override fun onResume() {
          super.onResume()
          if (timer != null) {
@@ -333,7 +281,6 @@ class DashboardActivity : AppCompatActivity() {
              timer = null
          }
      }
-
      inner class LogOutTimerTask : TimerTask() {
          override fun run() {
 
@@ -341,7 +288,6 @@ class DashboardActivity : AppCompatActivity() {
              logout()
              CommonFunctions
                      .changeactivity(this@DashboardActivity, LoginActivity::class.java)
-
              finish()
          }
      }*/
@@ -349,17 +295,12 @@ class DashboardActivity : AppCompatActivity() {
         try {
             val timer = object : CountDownTimer(30 * 60 * 1000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-
                 }
-
                 override fun onFinish() {
                     logout()
-
                 }
-
             }
             timer.start()
-
         } catch (e: Exception) {
         }
     }

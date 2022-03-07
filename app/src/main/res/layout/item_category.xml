@@ -8,12 +8,15 @@
     android:background="@color/colorPrimaryDark">
 
     <TextView
-        android:text="categoryname"
+
         android:id="@+id/tv_categoryName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_50dp"
+        android:text="categoryname"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/lighttext"
+        android:textSize="@dimen/_18sp"
         android:background="@drawable/roundtextview"
         android:padding="@dimen/_10dp"
         android:gravity="left"
@@ -23,11 +26,11 @@
         android:id="@+id/iv_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_camel_category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

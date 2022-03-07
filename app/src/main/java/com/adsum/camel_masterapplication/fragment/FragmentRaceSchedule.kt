@@ -106,6 +106,9 @@ class FragmentRaceSchedule : Fragment() {
                                 binding.rsRecycleView.adapter = raceScheduleAdapter
                                 raceScheduleAdapter.notifyDataSetChanged()
                             }
+                            else{
+                                CommonFunctions.showToast(requireContext(),"Data not found")
+                            }
                         }
 
                         override fun onError(anError: ANError?) {

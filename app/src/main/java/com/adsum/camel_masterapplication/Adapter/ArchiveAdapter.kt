@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.adsum.camel_masterapplication.Adapter.ArchiveAdapter.ViewHolder
 import com.adsum.camel_masterapplication.Model.ArchiveData
 import com.adsum.camel_masterapplication.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ArchiveAdapter(val userList: List<ArchiveData.Data>, val clickListener: OnItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
 //    private lateinit var itemMainRvBinding: ItemHistoryBinding
@@ -23,7 +25,13 @@ class ArchiveAdapter(val userList: List<ArchiveData.Data>, val clickListener: On
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             val date = userList[position]
-            holder.tvYear.text = date.month.toString() + "  " +date.year.toString()
+            fun getMonthByNumber(monthnum: Int): String {
+                val c = Calendar.getInstance()
+                val month_date = SimpleDateFormat("MMM", Locale("ar"))
+                c[Calendar.MONTH] = monthnum - 1
+                return month_date.format(c.time)
+            }
+            holder.tvYear.text = getMonthByNumber(date.month) + "  " +date.year.toString()
 
 
             clickListener.let {

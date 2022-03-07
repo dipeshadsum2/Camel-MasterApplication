@@ -16,7 +16,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_user"
+            android:src="@drawable/user_ic"
             android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"

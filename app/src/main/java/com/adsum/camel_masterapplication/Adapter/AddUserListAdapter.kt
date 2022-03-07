@@ -9,11 +9,12 @@ import android.widget.*
 
 import androidx.recyclerview.widget.RecyclerView
 import com.adsum.camel_masterapplication.Model.AddUserListResponse
+import com.adsum.camel_masterapplication.Model.ListOfUserResponse
 import com.adsum.camel_masterapplication.R
 
 
 class AddUserListAdapter(
-    var ctx: Context, val userList: ArrayList<AddUserListResponse.Data>,
+    var ctx: Context, val userList: ArrayList<ListOfUserResponse.Data>,
     val checkedChangeListener: OnCheckedChangeListener,
     ) : RecyclerView.Adapter<AddUserListAdapter.ViewHolder>() {
 
@@ -32,7 +33,7 @@ class AddUserListAdapter(
               Toast.makeText(itemView.context, user_list.text, Toast.LENGTH_SHORT).show()
           }
         }
-        fun bind(userList: AddUserListResponse.Data, position: Int, click:OnCheckedChangeListener)
+        fun bind(userList: ListOfUserResponse.Data, position: Int, click:OnCheckedChangeListener)
 
         {
            checkbox.setOnClickListener{
@@ -97,7 +98,7 @@ class AddUserListAdapter(
     }
 
     interface OnCheckedChangeListener {
-        fun OnCheckedChangeListener(userList: AddUserListResponse.Data, position: Int)
+        fun OnCheckedChangeListener(userList: ListOfUserResponse.Data, position: Int)
 
 
     }

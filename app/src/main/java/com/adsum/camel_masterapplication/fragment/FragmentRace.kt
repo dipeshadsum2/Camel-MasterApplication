@@ -132,7 +132,7 @@ class FragmentRace : Fragment(), CustomAdapter.OnItemClickListener {
         position: Int,
         racename: String
     ) {
-        openFragment(FragmentSubcategoryRace.newInstance(camellist.id.toInt(),camellist.raceId.toInt(),camellist.type,camellist.roundName,camellist.customization,racename,Constants.isfromrace, position))
+       // openFragment(FragmentSubcategoryRace.newInstance(camellist.id.toInt(),camellist.raceId.toInt(),camellist.type,camellist.roundName,camellist.customization,racename,Constants.isfromrace, position))
         CommonFunctions.setPreference(context, Constants.isFromHistory, true)
     }
 }

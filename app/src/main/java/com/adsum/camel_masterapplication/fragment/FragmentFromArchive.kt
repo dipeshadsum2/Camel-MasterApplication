@@ -125,6 +125,13 @@ class FragmentFromArchive : Fragment(), ArchiveFromMonthAdapter.OnItemClickListe
         position: Int,
         racename: String
     ) {
-//
+        openFragment(
+            FragmentFromSubcategory.newInstance(
+                archiveList.id.toInt(),
+                archiveList.race_id.toInt(),
+                archiveList.round_name, racename,
+                position
+            )
+        )
     }
 }

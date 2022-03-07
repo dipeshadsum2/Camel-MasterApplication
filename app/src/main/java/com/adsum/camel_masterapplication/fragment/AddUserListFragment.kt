@@ -14,6 +14,7 @@ import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.AddUserListResponse
+import com.adsum.camel_masterapplication.Model.ListOfUserResponse
 import com.adsum.camel_masterapplication.Model.SelectedUserResponse
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.FragmentAddUserlistBinding
@@ -112,6 +113,7 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
 
 
 
+
         }
     }
     private fun SelectedUsers() {
@@ -137,37 +139,30 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
                     //.setOkHttpClient(okHttpClient)
                     .setPriority(Priority.HIGH)
                     .build()
-//                    .getAsJSONArray(object :JSONArrayRequestListener{
-//                        override fun onResponse(response: JSONArray?) {
-
-
-
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
 
                             Log.e("san", "response:--" + response)
                             //Destroy Progressbar
                             CommonFunctions.destroyProgressBar()
-                            var gson = Gson()
+//                            var gson = Gson()
+//
+//                            val res =  gson.fromJson(
+//                                response.toString(),
+//                                SelectedUserResponse::class.java
+//                            )
+                            if (response?.getInt(Constants.status)==1) {
+                                CommonFunctions.showToast(activity, response.getString(Constants.response))
+                                getUser()
 
-                            val res =  gson.fromJson(
-                                response.toString(),
-                                SelectedUserResponse::class.java
-                            )
-
-                            if (res.status == 1) {
-                                CommonFunctions.showToast(activity, res.response)
                                // raceDetailAdapter.deleterace(position)
                             } else {
-                                CommonFunctions.showToast(activity, res.response)
+                                CommonFunctions.showToast(activity,response?.getString(Constants.response) )
                             }
-
                         }
-
                         override fun onError(anError: ANError?) {
                             CommonFunctions.destroyProgressBar()
                         }
-
                     })
 
             }
@@ -180,8 +175,8 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-                val url: String = CamelConfig.WEBURL + CamelConfig.userList
-                //Log.e("san", "url:----" + url)
+                val url: String = CamelConfig.WEBURL + CamelConfig.listofuser
+                Log.e("san", "userlist:----" + url)
 
 
 //Progress start
@@ -192,6 +187,7 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
                     .build()
 
                 AndroidNetworking.post(url)
+                    .addBodyParameter("raceid", raceid.toString())
                     .addHeaders(Constants.Authorization, Constants.Authkey)
                     .setTag(url)
                     .setPriority(Priority.HIGH)
@@ -205,14 +201,14 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
 
                             val res = gson.fromJson(
                                 response.toString(),
-                                AddUserListResponse::class.java
+                                ListOfUserResponse::class.java
                             )
                             if (res.status== 1) {
 
                                 context?.let {
                                     inituser(it, res.data)
-
                                 }
+
                                 addUserListAdapter.notifyDataSetChanged()
                             }
                         }
@@ -228,14 +224,14 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
         }
     }
 
-    private fun inituser(context: Context, userList: ArrayList<AddUserListResponse.Data>){
+    private fun inituser(context: Context, userList: ArrayList<ListOfUserResponse.Data>){
 
         addUserListAdapter = AddUserListAdapter(context, userList,this)
         addUsersBinding?.userRecyclerview?.adapter = addUserListAdapter
 
     }
 
-    override fun OnCheckedChangeListener(userList: AddUserListResponse.Data, position: Int) {
+    override fun OnCheckedChangeListener(userList: ListOfUserResponse.Data, position: Int) {
         //addUserListAdapter.selectUser()
 
     }

@@ -42,6 +42,7 @@ class SubRaceDetailFragment : Fragment() {
     private lateinit var startDate: String
     private lateinit var endDate:String
     private lateinit var isfromrace: String
+    var data : ArrayList<String> = ArrayList()
 
 
     companion object {
@@ -138,6 +139,8 @@ class SubRaceDetailFragment : Fragment() {
                                 SubRaceDetailResponse::class.java
                             )
                             if (res.status== 1) {
+                                data.add(res.data.toString())
+                                Log.e("data","array"+data)
 
                                 context?.let {
                                     initRace(it, res.data)

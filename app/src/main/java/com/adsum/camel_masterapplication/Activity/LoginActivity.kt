@@ -16,6 +16,7 @@ import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Config.Constants.NO_DATA
 import com.adsum.camel_masterapplication.Config.Constants.SPACE
 import com.adsum.camel_masterapplication.Model.LoginResponse
+import com.adsum.camel_masterapplication.Model.LoginerrorResponse
 
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.ActivityLoginBinding
@@ -34,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var activityloginBinding: ActivityLoginBinding
     private lateinit var rootView: View
+
     companion object {
         fun startActivity(activity: Activity) {
             activity.startActivity(
@@ -87,16 +89,11 @@ class LoginActivity : AppCompatActivity() {
                     loginUser(false, this)
                 }
             }
-
-
         }
-
     }
 
     private fun loginUser(b: Boolean, context: Context) {
-
         try {
-
             if (CommonFunctions.checkConnection(this)) {
 
                 val url: String = CamelConfig.WEBURL + CamelConfig.login
@@ -128,36 +125,31 @@ class LoginActivity : AppCompatActivity() {
                             var flag = false
                             CommonFunctions.destroyProgressBar()
                             val gson = Gson()
-
-//                            try {
-//                                val res = gson.fromJson(
-//                                    response.toString(),
-//                                    LoginResponse::class.java
-//                                )
-//                                flag = true
-//                            } catch (e: Exception) {
-//                                val res = gson.fromJson(
-//                                    response.toString(),
-//                                    LoginerrorResponse::class.java
-//                                )
-//                                flag = false
-//                            }
-
-
-//                            if (flag) {
+                            try {
                                 val res = gson.fromJson(
                                     response.toString(),
                                     LoginResponse::class.java
                                 )
-
-                                if (res.status.toString() == "1"){
+                                flag = true
+                            } catch (e: Exception) {
+                                val res = gson.fromJson(
+                                    response.toString(),
+                                    LoginerrorResponse::class.java
+                                )
+                                flag = false
+                            }
+                            if (flag) {
+                                val res = gson.fromJson(
+                                    response.toString(),
+                                    LoginResponse::class.java
+                                )
+                                if (res.status.toString() == "1") {
                                     CommonFunctions.destroyProgressBar()
                                     CommonFunctions.setPreference(
                                         applicationContext,
                                         Constants.isLogin,
                                         true
                                     )
-
                                     CommonFunctions.setPreference(
                                         applicationContext,
                                         Constants.ID,
@@ -178,9 +170,9 @@ class LoginActivity : AppCompatActivity() {
                                         Constants.last_login_time,
                                         res.data.last_login_time
                                     )
-
-                                    val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2022-01-24 09:42:46")
-                                    Log.e("san" ,"dateformate:=="+ date.time)
+                                    val date =
+                                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2022-01-24 09:42:46")
+                                    //  Log.e("san" ,"dateformate:=="+ date.time)
 
                                     CommonFunctions.setPreference(
                                         applicationContext,
@@ -192,27 +184,18 @@ class LoginActivity : AppCompatActivity() {
 //                                            response
 //                                        )
 //                                    )
-
                                     DashboardActivity.startActivity(this@LoginActivity)
-
-                                }else{
+                                } else {
                                     CommonFunctions.showToast(this@LoginActivity, res.response)
                                 }
-//
-//                            } else {
-//                                val res = gson.fromJson(
-//                                    response.toString(),
-//                                    LoginerrorResponse::class.java
-//                                )
-//                                CommonFunctions.destroyProgressBar()
-//
-//                                CommonFunctions.showToast(
-//                                    this@LoginActivity,
-//                                    res.response.toString()
-//                                )
-//
-//                            }
-
+                            } else {
+                                val res = gson.fromJson(
+                                    response.toString(),
+                                    LoginerrorResponse::class.java
+                                )
+                                CommonFunctions.destroyProgressBar()
+                                CommonFunctions.showToast(this@LoginActivity, res.response)
+                            }
                         }
 
                         override fun onError(anError: ANError?) {
@@ -220,17 +203,11 @@ class LoginActivity : AppCompatActivity() {
                             CommonFunctions.showToast(applicationContext, anError.toString())
                         }
                     })
-
             }
-
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
     }
-
 
     private fun validation(login: String, password: String) = when {
         login.replace(SPACE, NO_DATA).isEmpty() -> {

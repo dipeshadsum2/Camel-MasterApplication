@@ -10,12 +10,17 @@
     android:paddingTop="@dimen/_5dp"
     android:paddingBottom="@dimen/_20dp"
     android:background="@color/colorPrimaryDark">
+
     <TableLayout
         android:id="@+id/simpleTableLayout"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryDark"
         android:layout_height="match_parent"
-        android:stretchColumns="*">
+        android:background="@color/colorPrimaryDark"
+        android:stretchColumns="*"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TableRow
             android:id="@+id/fourRow"
             android:layout_width="fill_parent"
@@ -23,32 +28,33 @@
 
             <!-- first element of the row-->
             <TextView
-                android:id="@+id/sub_cname"
+                android:id="@+id/tv_participant"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape"
-                android:gravity="center"
+                android:background="@drawable/topleftcell"
                 android:fontFamily="sans-serif-medium"
+                android:gravity="center"
                 android:padding="@dimen/_10dp"
-                android:text="@string/camel"
+                android:text="@string/name_of_participant"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
 
             <TextView
-                android:id="@+id/tv_sub_cname"
+                android:id="@+id/tv_participant1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:gravity="center"
-                android:text="@string/camel_name"
                 android:layout_marginLeft="-1dp"
-                android:background="@drawable/cell_shape"
                 android:layout_weight="1"
+                android:background="@drawable/toprightcell"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="@string/name_of_participant"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
         </TableRow>
+
         <TableRow
             android:id="@+id/secondRow"
             android:layout_width="fill_parent"
@@ -56,35 +62,36 @@
 
             <!-- first element of the row-->
             <TextView
-                android:id="@+id/sub_sex"
+                android:id="@+id/tv_camelType"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginTop="-1dp"
-                android:text="@string/sex1"
+                android:layout_weight="1"
                 android:background="@drawable/cell_shape"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="@string/type"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
 
             <TextView
-                android:id="@+id/tv_sub_sex"
+                android:id="@+id/tv_camelType1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:gravity="center"
                 android:layout_marginLeft="-1dp"
-                android:text="@string/sex"
                 android:layout_marginTop="-1dp"
-
-                android:background="@drawable/cell_shape"
                 android:layout_weight="1"
+                android:background="@drawable/cell_shape"
+                android:gravity="center"
+
+                android:padding="@dimen/_10dp"
+                android:text="@string/type"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
         </TableRow>
+
         <TableRow
 
             android:id="@+id/thirdRow"
@@ -93,121 +100,52 @@
 
             <!-- first element of the row-->
             <TextView
-                android:id="@+id/sub_customization"
+                android:id="@+id/tv_camelNo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:gravity="center"
-                android:layout_weight="1"
                 android:layout_marginTop="-1dp"
+                android:layout_weight="1"
+                android:background="@drawable/bottomleftcell"
                 android:fontFamily="sans-serif-medium"
-                android:background="@drawable/cell_shape"
-                android:text="@string/customization1"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="@string/camel_no"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
 
             <TextView
-                android:id="@+id/tv_sub_customization"
+                android:id="@+id/tv_camelNo1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginTop="-1dp"
                 android:layout_marginLeft="-1dp"
-                android:background="@drawable/cell_shape"
-                android:text="@string/customization"
+                android:layout_marginTop="-1dp"
+                android:layout_weight="1"
+                android:background="@drawable/bottomrightcell"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="@string/camel_no"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
         </TableRow>
-        <TableRow
 
-            android:id="@+id/fourthRow"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
 
-            <!-- first element of the row-->
-            <TextView
-                android:id="@+id/sub_prize"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"
-                android:layout_marginTop="-1dp"
-                android:background="@drawable/cell_shape"
-                android:text="@string/prize1"
-                android:textColor="@color/lighttext"
-                android:textSize="@dimen/_15sp" />
-
-            <TextView
-                android:id="@+id/tv_sub_prize"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:gravity="center"
-                android:layout_marginLeft="-1dp"
-                android:background="@drawable/cell_shape"
-                android:text="@string/prize"
-                android:layout_marginTop="-1dp"
-
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-        </TableRow>
-        <TableRow
-
-            android:id="@+id/fifthhRow"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <!-- first element of the row-->
-            <TextView
-                android:id="@+id/sub_sub"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:layout_weight="1"
-                android:layout_marginTop="-1dp"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"
-                android:background="@drawable/cell_shape"
-                android:text="@string/subscriber"
-                android:textColor="@color/lighttext"
-                android:textSize="@dimen/_15sp" />
-
-            <TextView
-                android:id="@+id/tv_sub_details"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:gravity="center"
-                android:layout_marginTop="-1dp"
-                android:layout_marginLeft="-1dp"
-                android:background="@drawable/cell_shape"
-                android:text="@string/subscriberdetails"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-        </TableRow>
     </TableLayout>
+
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="@dimen/_80dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/red_layout"
+        android:gravity="center"
         android:text="@string/delete"
         android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@+id/simpleTableLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="@dimen/_10dp"
-        android:background="@drawable/red_layout"
         android:textColor="@color/login_white"
-        android:layout_marginTop="@dimen/_10dp"
+        android:textSize="@dimen/_15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/simpleTableLayout"
         tools:ignore="SpUsage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

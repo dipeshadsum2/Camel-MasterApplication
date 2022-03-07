@@ -26,18 +26,19 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_add_female_camel"
             android:paddingRight="@dimen/_13sp"
             app:layout_constraintStart_toStartOf="parent">
+
                 <TextView
                     android:id="@+id/tv_fsubname"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/_10dp"
                     android:layout_weight="1"
-                    android:textStyle="bold"
+                    android:background="@drawable/topleftcell"
                     android:gravity="center"
-                    android:background="@drawable/cell_shape"
+                    android:padding="@dimen/_10dp"
                     android:text="@string/subcribername"
                     android:textColor="@color/lighttext"
-                    android:textSize="@dimen/_16sp" />
+                    android:textSize="@dimen/_16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_ftype_camel"
@@ -52,18 +53,19 @@
                     android:textColor="@color/lighttext"
                     android:textSize="16sp"
                     />
+
                 <TextView
                     android:id="@+id/tv_fsurvey"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:padding="@dimen/_10dp"
                     android:layout_weight="1"
+                    android:background="@drawable/toprightcell"
                     android:gravity="center"
-                    android:background="@drawable/cell_shape"
+                    android:padding="@dimen/_10dp"
+                    android:text="@string/survey1"
                     android:textColor="@color/lighttext"
                     android:textSize="@dimen/_16sp"
-                    android:text="@string/survey1"/>
+                    android:textStyle="bold" />
         </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/female_recycle"

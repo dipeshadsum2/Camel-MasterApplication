@@ -24,11 +24,6 @@ class RaceDetailAdapter(
     private lateinit var itemRaceDetailBinding:ItemRaceDetailBinding
     private lateinit var items:ArrayList<RaceDetailResponse.Data>
 
-
-
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 //        itemRaceDetailBinding=ItemRaceDetailBinding.inflate(LayoutInflater.from(ctx),parent,false)
 //        return ViewHolder(itemRaceDetailBinding)

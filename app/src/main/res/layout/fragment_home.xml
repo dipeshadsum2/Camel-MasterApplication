@@ -7,7 +7,6 @@
     android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_main"
         android:layout_width="match_parent"
@@ -65,14 +64,16 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_camel"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="camel profile"
+                            android:text="@string/camel_profile"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -119,16 +120,18 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_user"
+                            android:src="@drawable/user_ic"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="user profile"
+                            android:text="@string/user_profile"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +144,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- sec layout-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_SecLayout"
             android:layout_width="0dp"
@@ -164,6 +166,8 @@
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_notify"
@@ -188,21 +192,37 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_notification"
+                            android:src="@drawable/notification_ic"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="notification"
+                            android:text="@string/notification"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_notification" />
+
+                        <TextView
+                            android:id="@+id/badge_text"
+                            android:layout_width="20dp"
+                            android:layout_height="@dimen/_20dp"
+                            android:background="@drawable/notification_badge"
+                            android:textColor="#FFFFFF"
+                            android:layout_gravity="right|end|top"
+                            android:gravity="center"
+                            android:visibility="invisible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -244,16 +264,18 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_participant_race"
+                            android:src="@drawable/particapte"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="participant in the race"
+                            android:text="@string/participate_in_race_round"
                             android:textColor="@color/lighttext"
                             android:textSize="15dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -262,11 +284,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
         <!--third layout -->
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_ThirdLayout"
             android:layout_width="match_parent"
@@ -312,16 +331,18 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_controlpanel"
+                            android:src="@drawable/control_panel_ic"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="control panel"
+                            android:text="@string/control_panel"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -367,16 +388,18 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_archieve"
+                            android:src="@drawable/archive_ic"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="MissingConstraints" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Race Archive"
+                            android:text="@string/race_archive"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -432,16 +455,18 @@
                             android:layout_width="40dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_schedule"
+                            android:src="@drawable/schedule_ic"
+                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            tools:ignore="MissingConstraints" />
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteY="-9dp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Race schedule"
+                            android:text="@string/race_schedule"
                             android:textColor="@color/lighttext"
                             android:textSize="18dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -492,7 +517,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Terms &amp; Conditions"
+                        android:text="@string/terms_condition"
                         android:textColor="@color/lighttext"
                         android:textSize="18dp" />
 

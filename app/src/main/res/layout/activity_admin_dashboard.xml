@@ -59,7 +59,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/royalblue" />
+                app:tint="@color/Black" />
 
             <TextView
                 android:id="@+id/tv_back"
@@ -68,10 +68,10 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:text="Back"
-                android:textStyle="bold"
+                android:textColor="@color/Black"
 
-                android:textColor="@color/royalblue"
                 android:textSize="@dimen/_16dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/title_image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -81,9 +81,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="home"
+                android:text="@string/title_home"
+                android:textColor="@color/Black"
                 android:textSize="@dimen/_20dp"
-                android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -95,22 +95,38 @@
                 android:id="@+id/image_add"
                 android:layout_width="@dimen/_30dp"
                 android:layout_height="@dimen/_30dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/transparent"
-                android:visibility="invisible"
                 android:src="@drawable/ic_baseline_add_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52" />
+
             <ImageView
                 android:id="@+id/image_adduser"
                 android:layout_width="@dimen/_30dp"
                 android:layout_height="@dimen/_30dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/transparent"
-                android:visibility="invisible"
                 android:src="@drawable/ic_baseline_add_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52" />
+
+            <ImageView
+                android:id="@+id/addImageSchedule"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_add_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:id="@+id/view"
@@ -143,6 +159,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -154,7 +171,7 @@
                         android:id="@+id/cl_first"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_200dp"
+                        android:layout_marginTop="150dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -180,7 +197,8 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:background="@drawable/roundtextview">
 
                                 <TextView
                                     android:id="@+id/tv_user_details"
@@ -229,7 +247,8 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:background="@drawable/roundtextview">
 
                                 <TextView
                                     android:id="@+id/tv_camel_details"
@@ -278,7 +297,8 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:background="@drawable/roundtextview">
 
                                 <TextView
                                     android:id="@+id/tv_race_details"
@@ -327,7 +347,8 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:background="@drawable/roundtextview">
 
                                 <TextView
                                     android:id="@+id/tv_race_schedule"
@@ -335,7 +356,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:padding="@dimen/_10dp"
-                                    android:text="Race Schedule"
+                                    android:text="@string/race_schedule"
                                     android:textColor="@color/lighttext"
                                     android:textSize="@dimen/_25dp"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -353,6 +374,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fram"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view">
 
         </FrameLayout>
 

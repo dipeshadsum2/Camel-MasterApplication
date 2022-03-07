@@ -14,18 +14,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-            <TextView
-                android:id="@+id/tv_fesubname"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_10dp"
-                android:layout_weight="1"
-                android:layout_marginTop="-1dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/cell_shape"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_fesubname"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-1dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottomleftcell"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_fetype_camel"
@@ -40,15 +41,16 @@
                 android:textColor="@color/lighttext"
                 android:textSize="15sp"
                 />
+
         <ImageButton
             android:id="@+id/iv_delete"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_marginTop="-1dp"
-            android:background="@drawable/cell_shape"
-            android:textColor="@color/red"
-            android:src="@drawable/ic_baseline_delete_24"/>
+            android:layout_weight="1"
+            android:background="@drawable/bottomrightcell"
+            android:gravity="center"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:textColor="@color/red" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

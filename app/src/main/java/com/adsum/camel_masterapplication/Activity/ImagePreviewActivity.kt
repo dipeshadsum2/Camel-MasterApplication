@@ -51,9 +51,6 @@ class ImagePreviewActivity : AppCompatActivity() {
         setSupportActionBar(imagePreviewBinding.toolbar3)
         supportActionBar?.apply {
         }
-        if (getSupportActionBar() != null) {
-            getSupportActionBar()?.hide();
-        }
 
         if (intent != null) {
             if (intent.hasExtra("images") && intent.getStringExtra("images") != null) {
@@ -104,7 +101,6 @@ class ImagePreviewActivity : AppCompatActivity() {
             MotionEvent.ACTION_POINTER_DOWN -> {
                 oldDist = spacing(event)
                 if (oldDist > 1f) {
-//                    midPoint(mid, event)
                     mode = ZOOM
                 }
                 lastEvent = FloatArray(4)
@@ -112,37 +108,8 @@ class ImagePreviewActivity : AppCompatActivity() {
                 lastEvent!![1] = event.getX(1)
                 lastEvent!![2] = event.getY(0)
                 lastEvent!![3] = event.getY(1)
-//                d = rotation(event)
             }
-//            MotionEvent.ACTION_UP -> {
-//                isZoomAndRotate = false
-//                if (mode == DRAG) {
-//                    val x = event.x
-//                    val y = event.y
-//                }
-//                isOutSide = true
-//                mode = NONE
-//                lastEvent = null
-//                mode = NONE
-//                lastEvent = null
-//            }
-//            MotionEvent.ACTION_OUTSIDE -> {
-//                isOutSide = true
-//                mode = NONE
-//                lastEvent = null
-//                mode = NONE
-//                lastEvent = null
-//            }
-//            MotionEvent.ACTION_POINTER_UP -> {
-//                mode = NONE
-//                lastEvent = null
-//            }
             MotionEvent.ACTION_MOVE -> if (!isOutSide) {
-//                if (mode == DRAG) {
-//                    isZoomAndRotate = false
-//                    view.animate().x(event.rawX + xCoOrdinate).y(event.rawY + yCoOrdinate)
-//                        .setDuration(0).start()
-//                }
                 if (mode == ZOOM && event.pointerCount == 2) {
                     val newDist1 = spacing(event)
                     if (newDist1 > 1f) {
@@ -151,33 +118,17 @@ class ImagePreviewActivity : AppCompatActivity() {
                         view.scaleY = scale
                     }
                     if (lastEvent != null) {
-//                        newRot = rotation(event)
                         view.rotation = (view.rotation + (newRot - d)) as Float
                     }
                 }
             }
-
         }
     }
-
-//    private fun rotation(event: MotionEvent): Float {
-//        val delta_x = (event.getX(0) - event.getX(1)).toDouble()
-//        val delta_y = (event.getY(0) - event.getY(1)).toDouble()
-//        val radians = Math.atan2(delta_y, delta_x)
-//        return Math.toDegrees(radians).toFloat()
-//    }
-
     private fun spacing(event: MotionEvent): Float {
         val x = event.getX(0) - event.getX(1)
         val y = event.getY(0) - event.getY(1)
         return Math.sqrt((x * x + y * y).toDouble()).toInt().toFloat()
     }
-
-//    private fun midPoint(point: PointF, event: MotionEvent) {
-//        val x = event.getX(0) + event.getX(1)
-//        val y = event.getY(0) + event.getY(1)
-//        point[x / 2] = y / 2
-//    }
     private fun shareImageandText(imageView: ImageView) {
         val uri: Uri? = getmageToShare(imageView)
         val intent = Intent(Intent.ACTION_SEND)
@@ -190,7 +141,6 @@ class ImagePreviewActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, "Share Via"))
     }
 
-    // Retrieving the url to share
     private fun getmageToShare(imageView: ImageView): Uri? {
         val imagefolder = File(cacheDir, "images")
         var uri: Uri? = null

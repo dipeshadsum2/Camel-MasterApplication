@@ -41,7 +41,7 @@
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.AppCompat.toolbar">
         <item name="windowActionBar">false</item>-->
-        <item name="android:title">true</item>
+        <item name="windowNoTitle">true</item>
     </style>
     <style name="roundImageView">
         <item name="cornerFamily">rounded</item>

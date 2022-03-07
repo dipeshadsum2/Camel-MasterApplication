@@ -11,8 +11,6 @@ import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.R
 
 class MainActivity : AppCompatActivity() {
-
-
     companion object {
         fun startActivity(activity: Activity) {
             activity.startActivity(
@@ -27,13 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
         supportActionBar?.hide()
-
-
-
         // This is used to hide the status bar and make
         // the splash screen as a full screen activity.
 

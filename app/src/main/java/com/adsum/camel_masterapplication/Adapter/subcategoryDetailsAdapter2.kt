@@ -28,8 +28,6 @@ class subcategoryDetailsAdapter2(var ctx: Context?, val userList: List<categoryD
             itemParticipateraceBinding.tvNoofparticipant.text = camellist.noofparticipants.toString()
             roundClickListener.let { holder.bind(camellist, position, it,ll) }
 
-
-
 //            itemparticipateraceBinding.tvRoundname.text = categorydetails.round_name
 //            itemparticipateraceBinding.tvType.text = categorydetails.type
 //            itemparticipateraceBinding.tvDistance.text= categorydetails.distance

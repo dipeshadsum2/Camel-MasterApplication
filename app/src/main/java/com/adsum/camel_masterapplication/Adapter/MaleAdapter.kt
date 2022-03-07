@@ -14,21 +14,16 @@ import java.util.Locale.filter
 
 class MaleAdapter(var ctx: Context, val malelist: ArrayList<AkbarResp.Data>, val strokClickListener: OndeleteClickListener) : RecyclerView.Adapter<MaleAdapter.ViewHolder>() {
     private lateinit var itemMaleBinding: ItemMaleBinding
-    //this method is returning the view for each item in the list
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaleAdapter.ViewHolder {
         itemMaleBinding = ItemMaleBinding.inflate(LayoutInflater.from(ctx), parent, false)
         return ViewHolder(itemMaleBinding)
     }
 
-    //this method is binding the data on the list
     override fun onBindViewHolder(holder: MaleAdapter.ViewHolder, position: Int) {
         try{
             val malelist = malelist[position]
             loadBannerPhoto(itemMaleBinding.ivDelete, "")
-
-
             itemMaleBinding.tvMsubname.text = malelist.rcCamel
             itemMaleBinding.tvMtypeCamel.text = malelist.rcId
             strokClickListener.let { holder.bind(malelist, position, it) }
@@ -46,13 +41,9 @@ class MaleAdapter(var ctx: Context, val malelist: ArrayList<AkbarResp.Data>, val
             )
             .into(imageView)
     }
-    //this method is giving the size of the list
     override fun getItemCount(): Int {
         return malelist.size
     }
-
-
-
     inner class ViewHolder internal constructor(binding: ItemMaleBinding): RecyclerView.ViewHolder(
         binding.root
     ) {
@@ -62,17 +53,16 @@ class MaleAdapter(var ctx: Context, val malelist: ArrayList<AkbarResp.Data>, val
             position: Int,
             clickListener: OndeleteClickListener
         ) {
-
             itemMaleBinding.ivDelete.setOnClickListener {
                 clickListener.OndeleteClick(malelist, position)
             }
         }
-
-
     }
-
+    fun DeleteMaleCamel(position: Int){
+        malelist.removeAt(position)
+        notifyDataSetChanged()
+    }
     interface OndeleteClickListener {
         fun OndeleteClick(malelist: AkbarResp.Data, position: Int)
-
     }
 }

@@ -45,7 +45,7 @@
         android:text=""
         android:textDirection="ltr"
         android:background="@drawable/round_layout"
-        android:hint="@string/enter_digit"
+        android:hint="@string/enter_username"
         android:singleLine="true"
         android:inputType="text"
         android:maxLength="20"

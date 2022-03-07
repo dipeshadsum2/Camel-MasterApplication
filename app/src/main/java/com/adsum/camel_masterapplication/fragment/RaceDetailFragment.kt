@@ -1,12 +1,17 @@
 package com.adsum.camel_masterapplication.fragment
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.adsum.camel_masterapplication.Adapter.RaceDetailAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
@@ -17,6 +22,7 @@ import com.adsum.camel_masterapplication.Model.RaceDetailResponse
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.FragmentRaceDetailBinding
 import com.adsum.camel_masterapplication.databinding.FragmentUpdateDateBinding
+import com.adsum.camel_masterapplication.databinding.PopupDeleteBinding
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -138,8 +144,6 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
                 raceList.endDate,
                 Constants.isfromrace,
                 position
-                // raceList.raceId,position
-                //category.race_id,category.no_of_participants[0].round_id.toString(), position
             ), "racedetail"
         )
     }
@@ -152,32 +156,30 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
     }
 
     override fun OnDeleteRecord(raceList: RaceDetailResponse.Data,position: Int) {
-        val builder = activity?.let { AlertDialog.Builder(it) }
-
-        builder?.setTitle("Confirm")
-        builder?.setMessage("Are you sure?")
-        builder?.setPositiveButton("YES") { dialog, which -> // Do nothing but close the dialog
+        val dialog = activity?.let { Dialog(it) }
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.popup_delete_racedetail)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val Done = dialog.findViewById(R.id.TV_donerace) as TextView
+        val cancel = dialog.findViewById(R.id.TV_cancel) as TextView
+//        body.text = title
+//        val yesBtn = dialog.findViewById(R.id.yesBtn) as Button
+//        val noBtn = dialog.findViewById(R.id.noBtn) as TextView
+        Done.setOnClickListener {
             DeleteRace(raceList.raceId.toInt(),position)
-
-            //getData()
+            dialog.dismiss()
+        }
+        cancel.setOnClickListener {
+            dialog.dismiss()
         }
 
-        builder?.setNegativeButton(
-            "NO"
-        ) { dialog, which -> // Do nothing
-            dialog?.dismiss()
-        }
-
-        val alert = builder?.create()
-        alert?.show()
-
+        dialog.show()
     }
 
 
     private fun DeleteRace(raceid: Int, position: Int) {
-
         try {
-
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
                 var url:String = CamelConfig.WEBURL + CamelConfig.removeRaceList+raceid
                // var url: String = "https://uaqcrc.com/wp-json/camel/v1/rmvracedetail"
@@ -215,15 +217,12 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
                             } else {
                                 CommonFunctions.showToast(activity, res.response)
                             }
-
                         }
 
                         override fun onError(anError: ANError?) {
                             CommonFunctions.destroyProgressBar()
                         }
-
                     })
-
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -239,13 +238,10 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
         raceid: String
     ) {
         var dialog = UpdateDateFragment.newInstance(raceList.raceId, position, this)
-
-
         dialog.show(
             requireFragmentManager(),
             "updateFragment"
         )
-
     }
 
     override fun OnUserClickListener(raceList: RaceDetailResponse.Data, position: Int) {

@@ -68,7 +68,10 @@ class FemaleAdapter(var ctx: Context, val femalelist: ArrayList<CampleResp.Data>
 
 
     }
-
+    fun DeleteFemaleCamel(position: Int){
+        femalelist.removeAt(position)
+        notifyDataSetChanged()
+    }
     interface OnfedeleteClickListener {
         fun OndeleteClick(malelist: CampleResp.Data, position: Int)
 

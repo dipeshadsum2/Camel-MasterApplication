@@ -56,12 +56,6 @@ object CommonFunctions {
             "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
-
-
-
-
-
-
     fun createProgressBar(
         context: Context?,
         strMsg: String?
@@ -83,18 +77,9 @@ object CommonFunctions {
         }
         return pd
     }
-
-
-    /**
-     * Destroy progress bar
-     */
     fun destroyProgressBar() {
         if (pd != null) pd!!.dismiss()
     }
-
-
-
-
     fun showToast(context: Context?, msg: String?) {
         try {
             if (toast == null || toast!!.view!!.windowVisibility != View.VISIBLE) {
@@ -106,8 +91,6 @@ object CommonFunctions {
             e.printStackTrace()
         }
     }
-
-
 
     fun getPreference(
         context: Context?, pref: String?,

@@ -27,11 +27,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape"
+                android:background="@drawable/topleftcell"
                 android:gravity="center_vertical"
                 android:fontFamily="sans-serif-medium"
                 android:padding="@dimen/_10dp"
-                android:text="round name"
+                android:text="@string/round_name"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="-1dp"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape"
+                android:background="@drawable/toprightcell"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10dp"
                 android:text="round name"
@@ -64,7 +64,7 @@
                 android:gravity="center_vertical"
                 android:fontFamily="sans-serif-medium"
                 android:layout_marginTop="-1dp"
-                android:text="type"
+                android:text="@string/type"
                 android:background="@drawable/cell_shape"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
@@ -118,7 +118,7 @@
                 android:layout_marginLeft="-1dp"
                 android:gravity="center_vertical"
                 android:background="@drawable/cell_shape"
-                android:text="@string/customization"
+                android:text="@string/customization1"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -139,8 +139,8 @@
                 android:layout_marginTop="-1dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:background="@drawable/cell_shape"
-                android:text="description"
+                android:background="@drawable/bottomleftcell"
+                android:text="@string/description"
                 android:textColor="@color/lighttext"
                 android:textSize="@dimen/_15sp" />
 
@@ -152,7 +152,7 @@
                 android:layout_marginTop="-1dp"
                 android:layout_marginLeft="-1dp"
                 android:gravity="center_vertical"
-                android:background="@drawable/cell_shape"
+                android:background="@drawable/bottomrightcell"
                 android:text=""
                 android:layout_weight="1"
                 android:textColor="@color/black"

@@ -1,58 +1,69 @@
 package com.adsum.camel_masterapplication.fragment
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.adsum.camel_masterapplication.Model.MaleResponse
 import com.adsum.camel_masterapplication.Adapter.SubCategoryRaceAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
+import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.*
 import com.adsum.camel_masterapplication.R
-
-
-import com.adsum.camel_masterapplication.Config.Constants
+import com.adsum.camel_masterapplication.databinding.CamelListSpinnerBinding
 import com.adsum.camel_masterapplication.databinding.FragmentSubcategoryRaceBinding
+import com.adsum.camel_masterapplication.databinding.PopupCamelAddBinding
+import com.adsum.camel_masterapplication.databinding.PopupDeleteBinding
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+import kotlin.math.log
+import kotlin.properties.Delegates
 
 
-class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteClickListener {
-
+class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteClickListener,
+    AdapterView.OnItemSelectedListener {
     private lateinit var rootView: View
     private lateinit var fragmentSubcategoryRaceBinding: FragmentSubcategoryRaceBinding
-
-    private lateinit var subCategoryRaceAdapter: SubCategoryRaceAdapter
+    private var popupDeleteBinding: PopupDeleteBinding? = null
+    private var popupCamelAddBinding :PopupCamelAddBinding? = null
+    private var binding: CamelListSpinnerBinding? = null
+    private var subCategoryRaceAdapter: SubCategoryRaceAdapter? = null
     private var roundid: Int = 0
-    private var userid = 0
-    private var rl_id = 0
     private var race_id: Int = 0
+    private var userid by Delegates.notNull<String>()
+    private var rl_id: Int = 0
+    private lateinit var res: AkbarResp
     private var position: Int = 0
     private var gender: String? = null
     private var racename = ""
     private var customization: String? = null
     private var roundname: String? = null
-    private lateinit var response2: ArrayList<SubcategoryRaceResponse>
-    private lateinit var res: MaleResponse
-    private lateinit var data: MaleResponse.MaleResponseItem
-    private lateinit var arrayAdapter: ArrayAdapter<String>
-    private lateinit var malelist: ArrayList<MaleResponse.MaleResponseItem>
-    private lateinit var femalelist: ArrayList<MaleResponse.MaleResponseItem>
-    private lateinit var mixModel: ArrayList<MixModel>
+    private var arrayAdapter: ArrayAdapter<String>? = null
+    private lateinit var malelist: ArrayList<AkbarResp.Data>
+    private lateinit var femalelist: ArrayList<AkbarResp.Data>
+    private var mixModel: ArrayList<MixModel>? = null
     val malelist2 = ArrayList<String>()
     var malelisttemp = ArrayList<String>()
     var malelistID = ArrayList<String>()
@@ -62,6 +73,11 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
     var femalelistID = ArrayList<String>()
     var femalelistIDtemp = ArrayList<String>()
     var from: String? = null
+    private var spinnerid: String = ""
+//    var response1 = ArrayList<String>()
+//    private var response2: ArrayList<NoOfParticipateResponse.Data> = ArrayList()
+    var listdata = ArrayList<ViewRoundList>()
+
     companion object {
         fun newInstance(
             param1: Int,
@@ -88,15 +104,15 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         fragmentSubcategoryRaceBinding =
             FragmentSubcategoryRaceBinding.inflate(inflater, container, false)
+        popupDeleteBinding = PopupDeleteBinding.inflate(inflater, container, false)
+        popupCamelAddBinding = PopupCamelAddBinding.inflate(inflater,container,false)
         rootView = fragmentSubcategoryRaceBinding.root
         roundid = requireArguments().getInt(Constants.id)
         race_id = requireArguments().getInt(Constants.race_id)
@@ -106,173 +122,103 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
         from = requireArguments().getString(Constants.from)
         customization = requireArguments().getString(Constants.customization)
         roundname = requireArguments().getString(Constants.round_name)
-        malelist = ArrayList<MaleResponse.MaleResponseItem>()
-        femalelist = ArrayList<MaleResponse.MaleResponseItem>()
+        malelist = ArrayList<AkbarResp.Data>()
+        femalelist = ArrayList<AkbarResp.Data>()
         fragmentSubcategoryRaceBinding.tvSubSex.text = gender
         fragmentSubcategoryRaceBinding.tvSubCostomization.text = customization
         fragmentSubcategoryRaceBinding.tvStrok.text = roundname
         fragmentSubcategoryRaceBinding.tvRaceid.text = racename
+        userid = CommonFunctions.getPreference(context, Constants.ID, "").toString()
         init()
-        if(from.equals(Constants.isFromHistory)){
-            fragmentSubcategoryRaceBinding.spnCamelname.visibility=View.GONE
-            fragmentSubcategoryRaceBinding.btnAddCamel.visibility=View.GONE
-        }
         return rootView
     }
 
     private fun initMale(context: Context, gender: String) {
-        userid = CommonFunctions.getPreference(activity, Constants.ID, 0)
-        var url: String = CamelConfig.WEBURL+CamelConfig.malelist
-        CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor(requireActivity()))
-            .build()
-
-        AndroidNetworking.get(url)
-            .addQueryParameter(Constants.user_id, userid.toString())
-            .addHeaders(Constants.Authorization, Constants.Authkey)
-            .setTag(url)
-//            .setOkHttpClient(okHttpClient)
-            .setPriority(Priority.HIGH)
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    CommonFunctions.destroyProgressBar()
-                    var gson = Gson()
-                    res = gson.fromJson(
-                        response.toString(),
-                        MaleResponse::class.java
-                    )
-
-
-                    var i = 0
-                    malelistID.clear()
-                    malelistIDtemp.clear()
-                    femalelistIDtemp.clear()
-                    femalelistID.clear()
-                    malelist2.clear()
-                    femalelist2.clear()
-                    while (i < res.size) {
-                        if (res[i].rcGender == Constants.male) {
-                            malelist.add(res[i])
-                            malelist2.add(res[i].rcCamel)
-                            malelistID.add(res[i].rcId)
-                        } else {
-                            femalelist.add(res[i])
-                            femalelist2.add(res[i].rcCamel)
-                            femalelistID.add(res[i].rcId)
+        try {
+            var url: String = CamelConfig.WEBURL + CamelConfig.malelist
+            CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(ChuckerInterceptor(requireActivity()))
+                .build()
+            AndroidNetworking.post(url)
+                .addHeaders("Accept", "application/json")
+                .addQueryParameter(Constants.user_id, userid)
+//            .addQueryParameter(Constants.user_id, userid.toString())
+                .addHeaders(Constants.Authorization, Constants.Authkey)
+                .setTag(url)
+                .setOkHttpClient(okHttpClient)
+                .setPriority(Priority.HIGH)
+                .build()
+//            .getAsJSONArray(object : JSONArrayRequestListener {
+//                override fun onResponse(response: JSONArray?) {
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        //Log.e("Tag","initmale"+response)
+                        CommonFunctions.destroyProgressBar()
+                        var gson = Gson()
+                        res = gson.fromJson(
+                            response.toString(),
+                            AkbarResp::class.java
+                        )
+                        var i = 0
+                        malelistID.clear()
+                        malelistIDtemp.clear()
+                        femalelistIDtemp.clear()
+                        femalelistID.clear()
+                        malelist2.clear()
+                        femalelist2.clear()
+                        while (i < res.data.size) {
+                            if (res.data[i].rcGender == Constants.male || res.data[i].rcGender == "جعدان") {
+                                malelist.add(res.data[i])
+                                malelist2.add(res.data[i].rcCamel)
+                                Log.e("tag", "maleList:" + i + "---" + res.data[i].rcId)
+                                malelistID.add(res.data[i].rcId)
+                            } else {
+                                femalelist.add(res.data[i])
+                                femalelist2.add(res.data[i].rcCamel)
+                                Log.e("tag", "femaleList:" + i + "---" + res.data[i].rcId)
+                                femalelistID.add(res.data[i].rcId)
+                            }
+                            i++
                         }
-                        i++
                     }
 
-
-                    if (gender .equals("جعدان",true)) {
-                        malelisttemp = malelist2
-                        malelistIDtemp = malelistID
-                        for (j in 0..mixModel.size - 1) {
-                            val subcategory = mixModel[j]
-                            for (k in 0..malelist2.size - 1) {
-                                if (subcategory.rc_camel.equals(malelist2.get(k), true)) {
-                                    malelisttemp.removeAt(k)
-                                    malelistIDtemp.removeAt(k)
-                                    break
-                                }
-                            }
-                        }
-                        arrayAdapter = ArrayAdapter<String>(
-                            context,
-                            R.layout.dropdown_menu_popup_item,
-                            malelisttemp
-                        )
-                    } else {
-                        femaletemp = femalelist2
-                        femalelistIDtemp = femalelistID
-                        for (j in 0..mixModel.size - 1) {
-                            val subcategory = mixModel[j]
-                            for (k in 0..femalelist2.size - 1) {
-                                if (subcategory.rc_camel.equals(femalelist2.get(k), true)) {
-                                    femaletemp.removeAt(k)
-                                    femalelistIDtemp.removeAt(k)
-                                    break
-                                }
-                            }
-                        }
-                        arrayAdapter = ArrayAdapter<String>(
-                            context,
-                            R.layout.dropdown_menu_popup_item,
-                            femaletemp
-                        )
+                    override fun onError(anError: ANError?) {
+                        CommonFunctions.destroyProgressBar()
+                        CommonFunctions.showToast(context, anError.toString())
                     }
-
-
-                    fragmentSubcategoryRaceBinding.spnCamelname.adapter = arrayAdapter
-
-
-                }
-
-                override fun onError(anError: ANError?) {
-                    CommonFunctions.destroyProgressBar()
-                    CommonFunctions.showToast(context, anError.toString())
-
-                }
-            })
-
-
+                })
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
+    @SuppressLint("ResourceType")
     private fun init() {
-
         try {
             showList()
-
-            var position2 = 0
-            fragmentSubcategoryRaceBinding.spnCamelname.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-
-                        position2 = position
-
-
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                    }
-                }
+            fragmentSubcategoryRaceBinding.tvCamelname.setOnClickListener {
+                showBottomSheetDialog()
+            }
             //addcamel
             fragmentSubcategoryRaceBinding.btnAddCamel.setOnClickListener {
-                var camelid = ""
-
-                if (gender.equals("جعدان",true)) {
-                    if(malelistIDtemp.size==0)
-                        return@setOnClickListener
-                    camelid = malelistIDtemp[position2]
-                } else {
-                    if(femalelistIDtemp.size==0)
-                        return@setOnClickListener
-                    camelid = femalelistIDtemp[position2]
-                }
-                var url: String = CamelConfig.WEBURL+CamelConfig.addCamelMember
+                var url: String = CamelConfig.WEBURL + CamelConfig.addCamelMember
+                Log.e("tag", "url:-" + url)
 //Progress start
                 CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
-
-                AndroidNetworking.get(url)
+                AndroidNetworking.post(url)
                     .addHeaders(Constants.Authorization, Constants.Authkey)
-                    .addPathParameter(Constants.race_id, race_id.toString())
-                    .addPathParameter(Constants.round_id, roundid.toString())
-                    .addPathParameter(Constants.user_id, userid.toString())
-                    .addPathParameter(Constants.camel_id, camelid)
+                    .addBodyParameter(Constants.race_id, race_id.toString())
+                    .addBodyParameter(Constants.round_id, roundid.toString())
+                    .addBodyParameter(Constants.user_id, userid.toString())
+                    .addBodyParameter(Constants.camel_id, spinnerid)
                     .setTag(url)
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
+                            Log.e("tag", "response:-" + response)
                             //Destroy Progressbar
                             CommonFunctions.destroyProgressBar()
                             var gson = Gson()
@@ -281,187 +227,186 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                                 AddRoundMemberResponse::class.java
                             )
                             if (res.status == 1) {
-                                showList()
+                                val dialog = activity?.let { Dialog(it) }
+                                dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                                dialog.setCancelable(false)
+                                dialog.setContentView(R.layout.popup_camel_add)
+                                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                                val Done = dialog.findViewById(R.id.doneTVAddCamel) as TextView?
+                                Done?.setOnClickListener {
+                                    showList()
+                                    dialog.dismiss()
+                                }
+                                dialog.show()
+
                                 CommonFunctions.showToast(activity, res.response)
                             } else {
                                 CommonFunctions.showToast(activity, res.response)
                             }
-
                         }
 
                         override fun onError(anError: ANError?) {
                             fragmentSubcategoryRaceBinding.btnAddCamel.isEnabled = true
-
                             CommonFunctions.destroyProgressBar()
                         }
-
                     })
             }
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     private fun showList() {
-        if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-
-            val url: String = CamelConfig.WEBURL+CamelConfig.get_sub_category_list
-            //Progress start
-
-            val data = JSONObject()
-            CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
-
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(ChuckerInterceptor(requireActivity()))
-                .build()
-
-            AndroidNetworking.post(url)
-                .addHeaders(Constants.Authorization, Constants.Authkey)
-                .addQueryParameter(Constants.race_id, race_id.toString())
-                .addQueryParameter(Constants.round_id, roundid.toString())
-                .setTag(url)
-                .addJSONObjectBody(data)
-                .setPriority(Priority.HIGH)
-//                .setOkHttpClient(okHttpClient)
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
-
-                        //Destroy Progressbar
-                        CommonFunctions.destroyProgressBar()
-                        val gson = Gson()
-                        val res = gson.fromJson(
-                            response.toString(),
-                            SubcategoryRaceResponse::class.java
-                        )
-                        if (res.get(0).members.size == 0) {
-                            fragmentSubcategoryRaceBinding.subRaceRecyclerView.visibility =
-                                View.GONE
-                            fragmentSubcategoryRaceBinding.tvNotfound.visibility = View.VISIBLE
-
-                        } else {
-                            fragmentSubcategoryRaceBinding.subRaceRecyclerView.visibility =
-                                View.VISIBLE
-                            fragmentSubcategoryRaceBinding.tvNotfound.visibility = View.GONE
-
-                        }
-
-                        response2 = ArrayList()
-                        response2.add(res)
-                        context?.let {
-                            initsubRace(it, res)
-                        }
-                        gender?.let {
-                            initMale(requireActivity(), it)
-                        }
-                    }
-
-                    override fun onError(anError: ANError?) {
-                        CommonFunctions.destroyProgressBar()
-                    }
-                })
-
-        }
-    }
-
-
-    private fun initsubRace(
-        context: Context,
-        subcategory: List<SubcategoryRaceResponse.SubcategoryRaceResponseItem>
-    ) {
-
-        mixModel = ArrayList<MixModel>()
-        var rcGender = ""
-        var customization = ""
-        var description = ""
-        var rcamelname = ""
-        var rcdetails = ""
-        var rl_id = ""
-        var user_id = ""
-
-        for (i in 0 until subcategory.size) {
-            for (j in 0 until subcategory[i].members.size) {
-                rcGender = subcategory[i].members[j].rcGender
-                rl_id = subcategory[i].members[j].rlId
-                customization = subcategory[i].rounds.customization
-                description = subcategory[i].rounds.description
-                rcamelname = subcategory[i].members[j].rcCamel
-                rcdetails = subcategory[i].members[j].user.nameOfParticipant
-                user_id = subcategory[i].members[j].userId
-
-                mixModel.add(
-                    MixModel(
-                        rcGender,
-                        customization,
-                        description,
-                        rl_id,
-                        rcamelname,
-                        rcdetails,
-                        user_id
-                    )
-                )
-            }
-        }
-
-        subCategoryRaceAdapter = SubCategoryRaceAdapter(context, mixModel,this,from.toString())
-        fragmentSubcategoryRaceBinding.subRaceRecyclerView.adapter = subCategoryRaceAdapter
-
-    }
-
-    override fun OndeleteClick(
-        subcategory: MixModel,
-        position: Int
-    ) {
-
-        val builder = activity?.let { AlertDialog.Builder(it) }
-
-        builder?.setTitle("Confirm")
-        builder?.setMessage("Are you sure?")
-        builder?.setPositiveButton("YES") { dialog, which -> // Do nothing but close the dialog
-            rl_id = subcategory.rl_id.toInt()
-            if (CommonFunctions.getPreference(requireContext(), Constants.ID, 0)
-                    .toString() == subcategory.userId
-            ) {
-                Delete(rl_id)
-//                subCategoryRaceAdapter.subcategory.removeAt(position)
-//                subCategoryRaceAdapter.notifyDataSetChanged()
-                showList()
-
-            } else {
-                CommonFunctions.showToast(activity, "not remove")
-            }
-
-        }
-
-        builder?.setNegativeButton(
-            "NO"
-        ) { dialog, which -> // Do nothing
-            dialog?.dismiss()
-        }
-
-        val alert = builder?.create()
-        alert?.show()
-    }
-
-    private fun Delete(id: Int) {
         try {
-
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-                var url: String = CamelConfig.WEBURL + CamelConfig.remove + id
-//Progress start
-                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
-
+                val url: String = CamelConfig.WEBURL + CamelConfig.ViewRoundMemberlisting
+                //   val data = JSONObject()
+                CommonFunctions.createProgressBar(context, "Please Wait")
                 val okHttpClient = OkHttpClient.Builder()
                     .addInterceptor(ChuckerInterceptor(requireActivity()))
                     .build()
-
-                AndroidNetworking.get(url)
+                AndroidNetworking.post(url)
                     .addHeaders(Constants.Authorization, Constants.Authkey)
-                    .addPathParameter(Constants.rl_id, rl_id.toString())
+                    .addQueryParameter(Constants.race_id, race_id.toString())
+                    .addQueryParameter(Constants.round_id, roundid.toString())
+                    //   .addJSONObjectBody(data)
                     .setTag(url)
-//                    .setOkHttpClient(okHttpClient)
+                    .setPriority(Priority.HIGH)
+                    .setOkHttpClient(okHttpClient)
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+                            Log.e("Tag", "response:-" + response)
+                            CommonFunctions.destroyProgressBar()
+                            var array: JSONArray = response!!.getJSONArray("data")
+                            for (i in 0..array.length() - 1) {
+                                var dataObj: JSONObject? = array.getJSONObject(i)
+                                try {
+                                    var members: JSONObject = dataObj!!.getJSONObject("members")
+                                    Log.e("San", "Gender " + members.getString("rc_gender"))
+                                    var memberlistArray: JSONArray =
+                                        members.getJSONArray("member_list")
+                                    Log.e("San", "length " + memberlistArray.length())
+                                    for (j in 0..memberlistArray.length() - 1) {
+                                        var item: JSONObject = memberlistArray.getJSONObject(j)
+                                        var itemUser: JSONObject = item.getJSONObject("user")
+                                        var arayItem = ViewRoundList()
+                                        arayItem.rc_camel = item.getString("rc_camel")
+                                        arayItem.rl_id = item.getString("rl_id")
+                                        arayItem.name_of_participant =
+                                            itemUser.getString("name_of_participant")
+                                        arayItem.camel_no = itemUser.getString("camel_no")
+                                        listdata.add(arayItem)
+                                    }
+                                    Log.e("San", "length " + listdata.size)
+                                    Log.e("San", "listdata " + listdata)
+                                } catch (e: JSONException) {
+                                    Log.e("San", "no membar  " + e)
+                                }
+                            }
+
+                            subCategoryRaceAdapter =
+                                context?.let {
+                                    SubCategoryRaceAdapter(
+                                        it,
+                                        listdata,
+                                        this@FragmentSubcategoryRace,
+                                        from.toString()
+                                    )
+                                }
+                            fragmentSubcategoryRaceBinding.subRaceRecyclerView.adapter =
+                                subCategoryRaceAdapter
+                            subCategoryRaceAdapter?.notifyDataSetChanged()
+
+                            Log.e("res", "res------" + array.length())
+                            gender?.let {
+                                initMale(requireActivity(), it)
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            CommonFunctions.destroyProgressBar()
+                        }
+                    })
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun showBottomSheetDialog() {
+        val bottomSheetDialog = context?.let { BottomSheetDialog(it) }
+        bottomSheetDialog?.setContentView(R.layout.camel_list_spinner)
+        bottomSheetDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val spinner: Spinner = bottomSheetDialog?.findViewById<View>(R.id.spinner_list) as Spinner
+        val done = bottomSheetDialog.findViewById<View>(R.id.tv_done)
+        if (gender == "Male" || gender == "جعدان") {
+            arrayAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                malelist2
+            )
+        } else {
+            arrayAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                femalelist2
+            )
+        }
+        done?.setOnClickListener {
+            val text: String = spinner.getSelectedItem().toString()
+            if (gender == "Male" || gender == "جعدان")
+                spinnerid = malelist.get(spinner.selectedItemPosition).rcId
+            else
+                spinnerid = femalelist.get(spinner.selectedItemPosition).rcId
+            fragmentSubcategoryRaceBinding.tvCamelname.text = text
+            bottomSheetDialog.dismiss()
+        }
+        spinner.adapter = arrayAdapter
+        arrayAdapter!!.notifyDataSetChanged()
+        bottomSheetDialog?.show()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        binding?.tvDone!!.text = "Selected : " + malelist2
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun OndeleteClick(subcategory: ViewRoundList, position: Int) {
+        val dialog = activity?.let { Dialog(it) }
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.popup_delete)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val Done = dialog.findViewById(R.id.tv_deletecamel) as TextView
+        val cancel = dialog.findViewById(R.id.tv_cancelcamel) as TextView
+        Done.setOnClickListener {
+            Delete(subcategory.rl_id!!.toInt(), position)
+            dialog.dismiss()
+        }
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    fun Delete(rl_id: Int, position: Int) {
+        try {
+            if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
+                var url: String = CamelConfig.WEBURL + CamelConfig.removecamel
+//Progress start
+                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(ChuckerInterceptor(requireActivity()))
+                    .build()
+                AndroidNetworking.post(url)
+                    .addBodyParameter("rl_id", rl_id.toString())
+                    .addHeaders(Constants.Authorization, Constants.Authkey)
+                    .setTag(url)
+                    //.setOkHttpClient(okHttpClient)
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
@@ -474,28 +419,23 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                                 SubRaceResponse::class.java
                             )
                             if (res.status == 1) {
-
                                 CommonFunctions.showToast(activity, res.response)
-                                gender?.let {
-                                    initMale(requireActivity(), it)
-                                }
+                                subCategoryRaceAdapter?.deleteSubCategory(position)
+//                                gender?.let {
+//                                    initMale(requireActivity(), it)
+//                                }
                             } else {
                                 CommonFunctions.showToast(activity, res.response)
                             }
-
                         }
 
                         override fun onError(anError: ANError?) {
                             CommonFunctions.destroyProgressBar()
                         }
                     })
-
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 }
-
-
-

@@ -131,7 +131,7 @@ class FragmentRaceFromHistory : Fragment(), CustomAdapter.OnItemClickListener {
     }
 
     override fun OnCustomClick(camellist: RaceResponse.RaceResponseItem.Round, position: Int,racename: String) {
-        openFragment(FragmentSubcategoryRace.newInstance(camellist.id.toInt(),camellist.raceId.toInt(),camellist.type,camellist.roundName,camellist.raceId,racename,Constants.isFromHistory, position))
+        //openFragment(FragmentSubcategoryRace.newInstance(camellist.id.toInt(),camellist.raceId.toInt(),camellist.type,camellist.roundName,camellist.raceId,racename,Constants.isFromHistory, position))
         CommonFunctions.setPreference(context, Constants.isFromHistory, true)
     }
 }

@@ -2,22 +2,24 @@ package com.adsum.camel_masterapplication.fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.R
-import com.adsum.camel_masterapplication.databinding.FragmentMailBinding
 import com.adsum.camel_masterapplication.Adapter.MaleAdapter
 import com.adsum.camel_masterapplication.Config.Constants
 
 import com.adsum.camel_masterapplication.Model.*
-import com.adsum.camel_masterapplication.databinding.AddMaleCamelPopupBinding
-import com.adsum.camel_masterapplication.databinding.AlertPopupBinding
+import com.adsum.camel_masterapplication.databinding.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -36,7 +38,8 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
     private lateinit var maleAdapter: MaleAdapter
     private lateinit var malebinding: FragmentMailBinding
     private lateinit var alertPopupBinding: AlertPopupBinding
-    private lateinit var addMaleCamelPopupBinding: AddMaleCamelPopupBinding
+    private lateinit var addCamelPopupBinding: AddCamelPopupBinding
+    private var popupDeleteBinding: PopupDeleteBinding? = null
     private lateinit var rootView: View
     private var user_id by Delegates.notNull<String>()
     var count: Int = 0
@@ -47,7 +50,7 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         fun newInstance(
         ): MaleFragment {
             val fragment: MaleFragment =
-                MaleFragment()
+                    MaleFragment()
             val args = Bundle()
             fragment.setArguments(args)
             return fragment
@@ -56,14 +59,15 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
 
     @SuppressLint("WrongConstant")
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         malebinding = FragmentMailBinding.inflate(inflater, container, false)
-        addMaleCamelPopupBinding = AddMaleCamelPopupBinding.inflate(LayoutInflater.from(context))
+        addCamelPopupBinding = AddCamelPopupBinding.inflate(LayoutInflater.from(context))
         rootView = malebinding.root
+        popupDeleteBinding = PopupDeleteBinding.inflate(inflater, container, false)
         user_id = CommonFunctions.getPreference(activity, Constants.ID, "").toString()
 
 
@@ -76,11 +80,13 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         val builder: AlertDialog.Builder? = context?.let {
             AlertDialog.Builder(it)
         }
-        builder?.setView(addMaleCamelPopupBinding.root)
-        addMaleCamelPopupBinding.edtCamel.setHint("أدخل اسم الجمل")
-        addMaleCamelPopupBinding.edtCamel.setText("")
-        return builder?.create()
+        builder?.setView(addCamelPopupBinding.root)
+        addCamelPopupBinding.edtCamel.setHint("أدخل اسم الجمل")
+        addCamelPopupBinding.edtCamel.setText("")
 
+        val dialog = builder?.create()
+        dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        return dialog
     }
 
     fun onCreateDialog1(): Dialog? {
@@ -102,42 +108,42 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor(requireActivity()))
-            .build()
+                .addInterceptor(ChuckerInterceptor(requireActivity()))
+                .build()
 
 
 
         AndroidNetworking.get(url)
-            .addHeaders(Constants.Authorization, Constants.Authkey)
-            .addQueryParameter(Constants.camel, camelName)
-            .addQueryParameter(Constants.gender, gender)
-            .addQueryParameter(Constants.status, status.toString())
-            .addQueryParameter(Constants.user_id, id.toString())
-            .setTag(url)
-            .setPriority(Priority.HIGH)
+                .addHeaders(Constants.Authorization, Constants.Authkey)
+                .addQueryParameter(Constants.camel, camelName)
+                .addQueryParameter(Constants.gender, gender)
+                .addQueryParameter(Constants.status, status.toString())
+                .addQueryParameter(Constants.user_id, id.toString())
+                .setTag(url)
+                .setPriority(Priority.HIGH)
 //                .setOkHttpClient(okHttpClient)
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-                    //  Log.e("san","responsee:--" +response)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        //  Log.e("san","responsee:--" +response)
 
-                    //Destroy Progressbar
-                    CommonFunctions.destroyProgressBar()
-                    val gson = Gson()
-                    val res = gson.fromJson(response.toString(), AddCamelResponse::class.java)
+                        //Destroy Progressbar
+                        CommonFunctions.destroyProgressBar()
+                        val gson = Gson()
+                        val res = gson.fromJson(response.toString(), AddCamelResponse::class.java)
 
-                    if (res.status == 1) {
-                        getdata()
-                    } else {
-                        CommonFunctions.showToast(activity, res.response)
+                        if (res.status == 1) {
+                            getdata()
+                        } else {
+                            CommonFunctions.showToast(activity, res.response)
+                        }
                     }
-                }
 
-                override fun onError(anError: ANError?) {
-                    CommonFunctions.destroyProgressBar()
-                    CommonFunctions.showToast(context, anError.toString())
-                }
-            })
+                    override fun onError(anError: ANError?) {
+                        CommonFunctions.destroyProgressBar()
+                        CommonFunctions.showToast(context, anError.toString())
+                    }
+                })
         // }else{
         //  CommonFunctions.showToast(activity,"alert 10 data")
         // }
@@ -146,39 +152,34 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
     }
 
     private fun init() {
-
         try {
             getdata()
             var d = onCreateDialog()
             malebinding.btnAddMaleCamel.setOnClickListener {
-                addMaleCamelPopupBinding.edtCamel.setText("")
+                addCamelPopupBinding.edtCamel.setText("")
                 d?.show()
             }
-
-
-            addMaleCamelPopupBinding.btnMale.setOnClickListener {
+            addCamelPopupBinding.tvAddCamelList.setOnClickListener {
                 for (j in 0..resmain.size - 1) {
                     val subcategory = resmain[j]
-                    if (subcategory.rcCamel.equals(addMaleCamelPopupBinding.edtCamel.text.toString())) {
+                    if (subcategory.rcCamel.equals(addCamelPopupBinding.edtCamel.text.toString())) {
                         CommonFunctions.showToast(activity, "الجمل موجود بالفعل")
                         return@setOnClickListener
                     }
                 }
                 if (count < 10) {
-                    if (addMaleCamelPopupBinding.edtCamel.text.toString().isNotEmpty()) {
+                    if (addCamelPopupBinding.edtCamel.text.toString().isNotEmpty()) {
                         //filter()
 
                         addCamel(
-                            addMaleCamelPopupBinding.edtCamel.text.toString(),
-                            Constants.male,
-                            1,
-                            user_id
+                                addCamelPopupBinding.edtCamel.text.toString(),
+                                Constants.male,
+                                1,
+                                user_id
                         )
-
-
                         d?.dismiss()
                     } else {
-                        addMaleCamelPopupBinding.edtCamel.requestFocus()
+                        addCamelPopupBinding.edtCamel.requestFocus()
                         CommonFunctions.showToast(requireContext(), "Camel name should not blank")
                     }
                 } else {
@@ -187,8 +188,8 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                 }
             }
 
-            addMaleCamelPopupBinding.btnCancel.setOnClickListener {
-                addMaleCamelPopupBinding.edtCamel.setText("")
+            addCamelPopupBinding.tvCancel.setOnClickListener {
+                addCamelPopupBinding.edtCamel.setText("")
                 d?.dismiss()
             }
 
@@ -203,7 +204,7 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
             // raceid = CommonFunctions.getPreference(context, Constants.ID, 0)
             val url: String = CamelConfig.WEBURL + CamelConfig.malelist + user_id
-          //  Log.e("san", "url:---" + url)
+            //  Log.e("san", "url:---" + url)
 
 //Progress start
 
@@ -211,40 +212,40 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
             CommonFunctions.createProgressBar(context, getString(R.string.please_wait))
 
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(ChuckerInterceptor(requireActivity()))
-                .build()
+                    .addInterceptor(ChuckerInterceptor(requireActivity()))
+                    .build()
 
             AndroidNetworking.get(url)
-                .addHeaders(Constants.Authorization, Constants.Authkey)
-                .setTag(url)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onResponse(response: JSONObject?) {
-                       // Log.e("san", "response3:---" + response)
-                        CommonFunctions.destroyProgressBar()
-                        val gson = Gson()
-                        // CommonFunctions.showToast(context,"Data"+ )
-                        val res = gson.fromJson(
-                            response.toString(),
-                            AkbarResp::class.java
-                        )
-                        if (res.status == 1) {
+                    .addHeaders(Constants.Authorization, Constants.Authkey)
+                    .setTag(url)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(response: JSONObject?) {
+                            // Log.e("san", "response3:---" + response)
+                            CommonFunctions.destroyProgressBar()
+                            val gson = Gson()
+                            // CommonFunctions.showToast(context,"Data"+ )
+                            val res = gson.fromJson(
+                                    response.toString(),
+                                    AkbarResp::class.java
+                            )
+                            if (res.status == 1) {
 
-                            mainAkbarRes  = res.data as ArrayList<AkbarResp.Data>
-                           // Log.e("san","mainAkbarRes:---"+mainAkbarRes)
-                            val filterlist = mainAkbarRes.filter  { it.rcGender == "Male" }
-                          //  Log.e("san","filterList:---"+filterlist)
-                            setadapterdata(filterlist)
-                            maleAdapter.notifyDataSetChanged()
+                                mainAkbarRes  = res.data as ArrayList<AkbarResp.Data>
+                                // Log.e("san","mainAkbarRes:---"+mainAkbarRes)
+                                val filterlist = mainAkbarRes.filter  { it.rcGender == "Male" }
+                                //  Log.e("san","filterList:---"+filterlist)
+                                setadapterdata(filterlist)
+                                maleAdapter.notifyDataSetChanged()
+                            }
                         }
-                    }
-                    override fun onError(anError: ANError?) {
-                        CommonFunctions.destroyProgressBar()
-                    }
+                        override fun onError(anError: ANError?) {
+                            CommonFunctions.destroyProgressBar()
+                        }
 
-                })
+                    })
         }
     }
 
@@ -258,32 +259,27 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
 
 
     override fun OndeleteClick(malelist: AkbarResp.Data, position: Int) {
-
-        val builder = activity?.let { AlertDialog.Builder(it) }
-
-        builder?.setTitle("Confirm")
-        builder?.setMessage("Are you sure?")
-        builder?.setPositiveButton("YES") { dialog, which -> // Do nothing but close the dialog
-            DeleteCamel(malelist.rcId.toInt())
-            getdata()
-//            maleAdapter.malelist.removeAt(position)
-//            maleAdapter.notifyDataSetChanged()
-
+        val dialog = activity?.let { Dialog(it) }
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.popup_delete)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val Done = dialog.findViewById(R.id.tv_deletecamel) as TextView
+        val cancel = dialog.findViewById(R.id.tv_cancelcamel) as TextView
+//        body.text = title
+//        val yesBtn = dialog.findViewById(R.id.yesBtn) as Button
+//        val noBtn = dialog.findViewById(R.id.noBtn) as TextView
+        Done.setOnClickListener {
+            DeleteCamel1(malelist.rcId.toInt(),position)
+            dialog.dismiss()
         }
-
-
-        builder?.setNegativeButton(
-            "NO"
-        ) { dialog, which -> // Do nothing
-            dialog?.dismiss()
+        cancel.setOnClickListener {
+            dialog.dismiss()
         }
-
-        val alert = builder?.create()
-        alert?.show()
-
+        dialog.show()
     }
 
-    private fun DeleteCamel(id: Int) {
+    private fun DeleteCamel1(id: Int,position: Int) {
         try {
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
@@ -292,37 +288,37 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                 CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 
                 val okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor(ChuckerInterceptor(requireActivity()))
-                    .build()
+                        .addInterceptor(ChuckerInterceptor(requireActivity()))
+                        .build()
 
                 AndroidNetworking.get(url)
-                    .addHeaders(Constants.Authorization, Constants.Authkey)
-                    .setTag(url)
+                        .addHeaders(Constants.Authorization, Constants.Authkey)
+                        .setTag(url)
 //                    .setOkHttpClient(okHttpClient)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
-                        override fun onResponse(response: JSONObject?) {
-                            //Destroy Progressbar
-                            CommonFunctions.destroyProgressBar()
-                            var gson = Gson()
-                            val res = gson.fromJson(
-                                response.toString(),
-                                DeleteCamelResponse::class.java
-                            )
-                            if (res.status == 1) {
-                                CommonFunctions.showToast(activity, res.response)
-                            } else {
-                                CommonFunctions.showToast(activity, res.response)
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject?) {
+                                //Destroy Progressbar
+                                CommonFunctions.destroyProgressBar()
+                                var gson = Gson()
+                                val res = gson.fromJson(
+                                        response.toString(),
+                                        DeleteCamelResponse::class.java
+                                )
+                                if (res.status == 1) {
+                                    CommonFunctions.showToast(activity, res.response)
+                                    maleAdapter.DeleteMaleCamel(position)
+                                } else {
+                                    CommonFunctions.showToast(activity, res.response)
+                                }
                             }
 
-                        }
+                            override fun onError(anError: ANError?) {
+                                CommonFunctions.destroyProgressBar()
+                            }
 
-                        override fun onError(anError: ANError?) {
-                            CommonFunctions.destroyProgressBar()
-                        }
-
-                    })
+                        })
 
             }
         } catch (e: Exception) {

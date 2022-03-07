@@ -34,7 +34,7 @@
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/cell_shape"
+                android:background="@drawable/topleftcell"
                 android:gravity="center"
                 android:padding="@dimen/_10dp"
                 android:text="@string/subcribername"
@@ -56,18 +56,19 @@
                     android:textColor="@color/lighttext"
                     android:textSize="15sp"
                     />
-                <TextView
-                    android:id="@+id/tv_survey"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
-                    android:textColor="@color/lighttext"
-                    android:textSize="15sp"
-                    android:text="@string/survey1"/>
+
+            <TextView
+                android:id="@+id/tv_survey"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/toprightcell"
+                android:gravity="center"
+                android:padding="@dimen/_10dp"
+                android:text="@string/survey1"
+                android:textColor="@color/lighttext"
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/male_recycle"
