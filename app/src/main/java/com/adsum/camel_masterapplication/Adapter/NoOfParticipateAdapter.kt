@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.adsum.camel_masterapplication.Model.NoOfParticipateResponse
+import com.adsum.camel_masterapplication.Model.ViewRoundList
 import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.ItemNoofparticipateBinding
 
 class NoOfParticipateAdapter(
     var ctx:Context,
-    var NoOfParticipateList: ArrayList<NoOfParticipateResponse.Data>,
+    var NoOfParticipateList: ArrayList<ViewRoundList>,
     val noOfparticipateClickListner: OnnoOfparticipateclickListner):RecyclerView.Adapter<NoOfParticipateAdapter.ViewHolder>() {
     private lateinit var itemNoofparticipateBinding: ItemNoofparticipateBinding
     inner class ViewHolder internal constructor(itemView : View):RecyclerView.ViewHolder(itemView){
@@ -20,7 +21,7 @@ class NoOfParticipateAdapter(
             val camelno : TextView = itemView.findViewById(R.id.tv_camelno)
             val participatename : TextView = itemView.findViewById(R.id.tv_paricipatename)
 
-            fun bind(participate: NoOfParticipateResponse.Data, position: Int, clickListner: OnnoOfparticipateclickListner) {
+            fun bind(participate: ViewRoundList, position: Int, clickListner: OnnoOfparticipateclickListner) {
 
             }
     }
@@ -39,9 +40,9 @@ class NoOfParticipateAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             val Participate = NoOfParticipateList[position]
-            holder.rccamel.text = Participate.members.member_list[0].rc_camel
-            holder.camelno.text = Participate.members.member_list[0].user.camel_no
-            holder.participatename.text = Participate.members.member_list[0].user.name_of_participant
+            holder.rccamel.text = Participate.rc_camel
+            holder.camelno.text = Participate.camel_no
+            holder.participatename.text = Participate.name_of_participant
 //        itemNoofparticipateBinding.tvRccamel.text = Participate.rc_camel
 //        itemNoofparticipateBinding.tvCamelno.text = Participate.user.camel_no
 //        itemNoofparticipateBinding.tvParicipatename.text = Participate.user.name_of_participant

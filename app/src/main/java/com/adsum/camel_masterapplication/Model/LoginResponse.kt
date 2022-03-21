@@ -20,7 +20,9 @@ data class LoginResponse(
         @SerializedName("last_login_time_timestamp_format")
         val last_login_time_timestamp_format: String,
         @SerializedName("last_login_time")
-        val last_login_time: String
+        val last_login_time: String,
+        @SerializedName("Subscription")
+        val subscription: String = "",
         )
 }
 

@@ -10,7 +10,8 @@ data class CampleResp(
     @SerializedName("response")
     val response: String,
     @SerializedName("status")
-    val status: Int
+    val status: Int,
+    val Subscriber: String
 )
 {
     data class Data(

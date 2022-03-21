@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_topbar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -31,9 +31,12 @@
                 android:layout_width="@dimen/_25dp"
                 android:layout_height="@dimen/_25dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginStart="16dp"
                 android:background="@color/transparent"
-                android:src="@drawable/ic_baseline_account_circle_24"
+                android:src="@drawable/ic_baseline_home_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/red" />
 
             <TextView
@@ -41,12 +44,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_5dp"
-                android:text="@string/title_profile"
-                android:textColor="@color/lighttext"
-                android:textSize="@dimen/_15dp" />
+                android:text="@string/title_home"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/_18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/backImageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_ios_new_24"
+                app:tint="@color/Black"/>
+
+            <TextView
+                android:id="@+id/backTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="back"
+                android:textColor="@color/black"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/backImageView2"
+                app:layout_constraintStart_toEndOf="@+id/backImageView2"
+                app:layout_constraintTop_toTopOf="@+id/backImageView2" />
+
+            <TextView
+                android:id="@+id/printText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="مطبعة"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/title_page"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_page" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:id="@+id/view_layout"
             android:layout_width="wrap_content"
@@ -83,17 +127,15 @@
 <!--            app:layout_constraintEnd_toEndOf="parent"-->
 <!--            app:menu="@menu/navigation" />-->
         <ImageButton
+            android:id="@+id/logout"
             android:layout_width="@dimen/_25dp"
             android:layout_height="@dimen/_25dp"
+            android:layout_marginEnd="16dp"
             android:background="@color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            android:id="@+id/logout"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/_15dp"
-            android:layout_marginTop="@dimen/_15dp"
             android:src="@drawable/ic_baseline_power_settings_new_24"
+            app:layout_constraintBottom_toTopOf="@+id/view_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ll_topbar"
             app:tint="@color/red" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

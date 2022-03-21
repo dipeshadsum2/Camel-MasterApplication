@@ -2,6 +2,7 @@ package com.adsum.camel_masterapplication.Adapter
 
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,8 +44,10 @@ class RecyclerSectionItemDecoration(
             fixLayoutSize(headerView, parent)
         }
         var previousHeader: CharSequence = ""
-        for (i in 0 until parent.childCount) {
+
+        for (i in 0 until parent.childCount-1) {
             val child = parent.getChildAt(i)
+//            Log.e("count" ,"child-Count ==="+child)
             val position = parent.getChildAdapterPosition(child)
             val title = sectionCallback.getSectionHeader(position)
             header.text = title

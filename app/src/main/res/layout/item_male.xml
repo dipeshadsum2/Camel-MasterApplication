@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="5dp">
         <!-- first element of the row-->
         <TextView
             android:id="@+id/tv_msubname"
@@ -20,19 +21,31 @@
             android:layout_height="match_parent"
             android:layout_marginTop="-1dp"
             android:layout_weight="1"
-            android:background="@drawable/bottomleftcell"
-            android:gravity="center_vertical"
-            android:padding="@dimen/_10dp"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:padding="@dimen/_8dp"
             android:text=""
             android:textColor="@color/black"
             android:textSize="15sp" />
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="-1dp"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:src="@drawable/ic_delete1"
+            app:tint="@color/red"
+            />
 
         <TextView
             android:id="@+id/tv_mtype_camel"
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="@dimen/_10dp"
+            android:gravity="center"
+            android:padding="@dimen/_8dp"
             android:layout_weight="1"
             android:background="@drawable/cell_shape"
             android:text=""
@@ -40,15 +53,6 @@
             android:textSize="15sp"
             />
 
-        <ImageButton
-            android:id="@+id/iv_delete"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-1dp"
-            android:layout_weight="1"
-            android:background="@drawable/bottomrightcell"
-            android:gravity="center"
-            android:src="@drawable/ic_baseline_delete_24"
-            android:textColor="@color/red" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -79,7 +79,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:padding="@dimen/_10dp"
-                    android:text="@string/race_id"
+                    android:text="@string/race_no"
                     android:textColor="@color/lighttext"
                     android:textSize="@dimen/_15sp" />
 
@@ -116,7 +116,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:padding="@dimen/_10dp"
-                    android:text="@string/no_of_round"
+                    android:text="@string/nor"
                     android:textColor="@color/lighttext"
                     android:textSize="@dimen/_15sp" />
 
@@ -217,6 +217,7 @@
             android:layout_height="@dimen/_40dp"
             android:layout_marginStart="24dp"
             android:src="@drawable/ic_delete"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/img_schedule"
             app:layout_constraintStart_toEndOf="@+id/img_schedule"
             app:layout_constraintTop_toTopOf="@+id/img_schedule"
@@ -228,6 +229,7 @@
             android:layout_height="@dimen/_40dp"
             android:layout_marginEnd="24dp"
             android:src="@drawable/ic_add_user"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/img_schedule"
             app:layout_constraintEnd_toStartOf="@+id/img_schedule"
             app:layout_constraintTop_toTopOf="@+id/img_schedule"
@@ -239,6 +241,7 @@
             android:layout_height="@dimen/_40dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/ic_add_schedule"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@+id/simpleTableLayout"
             app:layout_constraintStart_toStartOf="@+id/simpleTableLayout"
             app:layout_constraintTop_toBottomOf="@+id/simpleTableLayout"

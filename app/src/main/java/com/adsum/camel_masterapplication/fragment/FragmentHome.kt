@@ -1,7 +1,5 @@
 package com.adsum.camel_masterapplication.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +15,6 @@ import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.NotificationErrorResponse
 import com.adsum.camel_masterapplication.Model.NotificationResponse
-import com.adsum.camel_masterapplication.R
 import com.adsum.camel_masterapplication.databinding.ActivityDashboardBinding
 import com.adsum.camel_masterapplication.databinding.FragmentHomeBinding
 import com.androidnetworking.AndroidNetworking
@@ -28,6 +25,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONObject
+import kotlin.properties.Delegates
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class FragmentHome : Fragment() {
@@ -39,6 +37,7 @@ class FragmentHome : Fragment() {
     private var token = ""
     private var isRead: ArrayList<Int> = ArrayList()
     private lateinit var notification: TextView
+    var Role by Delegates.notNull<String>()
 
     companion object {
         fun newInstance(
@@ -64,6 +63,7 @@ class FragmentHome : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        Role=CommonFunctions.getPreference(activity,Constants.role,"").toString()
         rootView = binding.root
         notification = binding.badgeText
 
@@ -77,6 +77,14 @@ class FragmentHome : Fragment() {
     }
 
     private fun init() {
+
+        if (Role == "subscriber"){
+            binding.clControlPanel.visibility=View.GONE
+        }else {
+            binding.clControlPanel.visibility = View.VISIBLE
+        }
+
+
         binding.cvCamel.setOnClickListener {
             (activity as DashboardActivity).FragmentCamel()
         }
@@ -109,7 +117,7 @@ class FragmentHome : Fragment() {
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
                 val url: String = CamelConfig.WEBURL + CamelConfig.get_notification
                 val data = JSONObject()
-                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+                //CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
                 val okHttpClient = OkHttpClient.Builder()
                         .addInterceptor(ChuckerInterceptor(requireActivity()))
                         .build()

@@ -2,14 +2,13 @@ package com.adsum.camel_masterapplication.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-
 import com.adsum.camel_masterapplication.Adapter.SubRaceDetailAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
@@ -26,14 +25,17 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
+import org.json.JSONArray
 import org.json.JSONObject
+import org.w3c.dom.DocumentFragment
+import kotlin.properties.Delegates
 
 
 class SubRaceDetailFragment : Fragment() {
 
     private lateinit var subRaceDetailBinding: FragmentSubRaceDetailBinding
     private lateinit var itemRaceDetailBinding:ItemRaceDetailBinding
-    //private var raceid :Int=0
+    var Role by Delegates.notNull<String>()
 
     private lateinit var subRaceDetailAdapter:SubRaceDetailAdapter
     private lateinit var rootView: View
@@ -41,8 +43,10 @@ class SubRaceDetailFragment : Fragment() {
     private lateinit var race_name: String
     private lateinit var startDate: String
     private lateinit var endDate:String
-    private lateinit var isfromrace: String
-    var data : ArrayList<String> = ArrayList()
+    private lateinit var list: String
+
+    var data : ArrayList<SubRaceDetailResponse.Data> = ArrayList()
+    lateinit var subRaceDetailResponse1: SubRaceDetailResponse.Data
 
 
     companion object {
@@ -84,16 +88,19 @@ class SubRaceDetailFragment : Fragment() {
         subRaceDetailBinding = FragmentSubRaceDetailBinding.inflate(inflater, container, false)
         rootView = subRaceDetailBinding.root
 
-
-
         raceid = requireArguments().getString(Constants.race_id).toString()
      //   Log.e("tag","race_id" + raceid)
         race_name=requireArguments().getString(Constants.race_name).toString()
         startDate=requireArguments().getString(Constants.start_time).toString()
         endDate=requireArguments().getString(Constants.end_time).toString()
+        Role=CommonFunctions.getPreference(activity,Constants.role,"").toString()
 
-
-
+//       subRaceDetailBinding.tvPrint.setOnClickListener {
+//           val intent = Intent(requireContext(), PdfViewActivity::class.java)
+//           intent.putExtra("data",list)
+//           intent.putExtra("Name" , race_name)
+//           startActivity(intent)
+//       }
 
         init()
         return rootView
@@ -101,11 +108,28 @@ class SubRaceDetailFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_sub_race_detail, container, false)
     }
 
+    fun openFragment(fragment: Fragment?, name: String) {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.frameeLayout, fragment!!)
+        transaction?.addToBackStack(name)
+        val bundle = this.arguments
+        bundle!!.putString("data", list.toString())
+        fragment!!.setArguments(bundle);
+        transaction?.commit()
+    }
+
     private fun init() {
+
+        if(Role == "normal_user")
+        {
+            subRaceDetailBinding.tvPrint.visibility=View.VISIBLE
+        }else{
+            subRaceDetailBinding.tvPrint.visibility=View.GONE
+        }
+
+
         try {
-
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-
                 //raceid = CommonFunctions.getPreference(activity,"race_id",0)
                 val url: String = CamelConfig.WEBURL + CamelConfig.subracelist+raceid
                 Log.e("san", "url:----" + url)
@@ -133,14 +157,17 @@ class SubRaceDetailFragment : Fragment() {
                             Log.e("san", "response:---" + response)
                             CommonFunctions.destroyProgressBar()
                             var gson = Gson()
-
                             val res = gson.fromJson(
                                 response.toString(),
                                 SubRaceDetailResponse::class.java
                             )
                             if (res.status== 1) {
-                                data.add(res.data.toString())
-                                Log.e("data","array"+data)
+                                var array: JSONArray = response!!.getJSONArray("data")
+                                list= array.toString()
+                                Log.e("data","array"+list)
+//
+                                Log.e("data","array"+array)
+                                Log.e("data","array"+array.length())
 
                                 context?.let {
                                     initRace(it, res.data)

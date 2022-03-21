@@ -72,8 +72,6 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
        // user_id = CommonFunctions.getPreference(activity, Constants.user_id, "").toString()
        // status = requireArguments().getString(Constants.status).toString()
         return rootView
-
-
     }
 
 
@@ -204,7 +202,7 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
                     .addHeaders("Accept", "application/json")
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
 
             .getAsJSONObject(object : JSONObjectRequestListener {
@@ -264,7 +262,7 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
                     .addHeaders("Accept", "application/json")
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
@@ -304,10 +302,7 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
     }
 
     override fun blockuser(userdetail: UserDetailsResponse.Data, position: Int,status: String) {
-
         blockunblockUser(userdetail.user_id.toInt(),status.toInt())
-
-
     }
 
     private fun blockunblockUser(id: Int,status: Int){
@@ -316,7 +311,9 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
 
-                var url: String ="https://uaqcrc.com/wp-json/camel/v1/block_user"
+                var url: String = CamelConfig.WEBURL + CamelConfig.blockUser
+
+               // var url: String ="https://uaqcrc.com/wp-json/camel/v1/block_user"
                // Log.e("SAn","logresponce:--"+url)
                 val mParams: HashMap<String, String> = HashMap()
                 mParams[Constants.status] = status.toString()
@@ -332,7 +329,7 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
                     .addHeaders("Accept", "application/json")
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
@@ -356,16 +353,75 @@ class FragmentUserDetails : Fragment(), UserDetailsAdapter.OnUserDetailClickList
                             CommonFunctions.showToast(activity, anError.toString())
                         }
                     })
-
             }
-
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
     }
 
+    override fun subscription(
+        userdetail: UserDetailsResponse.Data,
+        position: Int,
+        subscription: String
+    ) {
+        subscriptionUser(userdetail.user_id.toInt(),subscription)
+    }
+
+    private fun subscriptionUser(id: Int,subscription: String)
+    {
+        try{
+            if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
+
+                var url: String = CamelConfig.WEBURL + CamelConfig.change_subscrition_status
+
+                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(ChuckerInterceptor(requireActivity()))
+                    .build()
+
+                AndroidNetworking.post(url)
+                 //   .addBodyParameter(mParams)
+                    .addHeaders(Constants.Authorization, Constants.Authkey)
+                    .addBodyParameter("user_id",id.toString())
+                    .addBodyParameter("subscription",subscription)
+                    .addHeaders("Accept", "application/json")
+                    .setTag(url)
+                    .setPriority(Priority.HIGH)
+//                    .setOkHttpClient(okHttpClient)
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+                            //  Log.e("SAn","Response:--"+response)
+                            CommonFunctions.destroyProgressBar()
+                            var gson = Gson()
+                            val res = gson.fromJson(
+                                response.toString(),
+                                ChangeSubscriptionStatusResponse::class.java)
+
+                            if (res.status == 1) {
+                                CommonFunctions.showToast(activity,res.response)
+
+
+                            } else {
+                                CommonFunctions.showToast(activity, res.response)
+                            }
+
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            CommonFunctions.destroyProgressBar()
+                            CommonFunctions.showToast(activity, anError.toString())
+                        }
+                    })
+
+
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
 
 
 }

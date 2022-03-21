@@ -14,7 +14,7 @@ import com.adsum.camel_masterapplication.databinding.ItemRaceSubcategoryBinding
 
 class SubCategoryRaceAdapter(
         var ctx: Context, val subcategory:ArrayList<ViewRoundList>
-        , val stroksubClickListener: OnsubdeleteClickListener,val from: String) : RecyclerView.Adapter<SubCategoryRaceAdapter.ViewHolder>() {
+        , val stroksubClickListener: OnsubdeleteClickListener,val from: String,val Role:String) : RecyclerView.Adapter<SubCategoryRaceAdapter.ViewHolder>() {
     private lateinit var itemRaceSubcategoryBinding: ItemRaceSubcategoryBinding
 
     inner class ViewHolder internal constructor(binding: View): RecyclerView.ViewHolder(binding)
@@ -43,7 +43,6 @@ class SubCategoryRaceAdapter(
     }
     //this method is giving the size of the list
     override fun getItemCount(): Int {
-        //  Log.e("tag","size"+subcategory.get(0).members.member_list.size)
         return subcategory.size
     }
 
@@ -53,6 +52,9 @@ class SubCategoryRaceAdapter(
             holder.tvParticipant1.text = subcategory.name_of_participant
             holder.tvCamelType1.text = subcategory.rc_camel
             holder.tvCamelNo1.text = subcategory.camel_no
+            if (Role == "normal_user") {
+                holder.btnDelete.visibility = View.GONE
+            }
             stroksubClickListener.let { holder.bind(subcategory, position, it) }
 
         }catch (e: Exception){

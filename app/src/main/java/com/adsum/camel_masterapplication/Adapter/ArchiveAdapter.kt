@@ -31,7 +31,7 @@ class ArchiveAdapter(val userList: List<ArchiveData.Data>, val clickListener: On
                 c[Calendar.MONTH] = monthnum - 1
                 return month_date.format(c.time)
             }
-            holder.tvYear.text = getMonthByNumber(date.month) + "  " +date.year.toString()
+            holder.tvYear.text =  date.year.toString()+ "  " +getMonthByNumber(date.month)
 
 
             clickListener.let {

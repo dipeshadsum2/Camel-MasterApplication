@@ -110,9 +110,9 @@ class FragmentAdminRaceSchedule : Fragment(), AdminRaceScheduleAdapter.OnItemCli
 //        val args = Bundle()
 //        args.putString("Image", image)
 //        fragment.setArguments(args)
-        val ft: FragmentTransaction = fragmentManager?.beginTransaction()!!
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction()!!
         ft.addToBackStack(null)
-        ft.replace(R.id.fram2, fragment)
+        ft.replace(R.id.fram, fragment)
         ft.commit()
 
     }

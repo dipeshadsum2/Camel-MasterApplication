@@ -25,18 +25,21 @@
 <!--        app:layout_constraintStart_toEndOf="@+id/roundNo"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
+    <EditText
         android:id="@+id/roundNo"
         android:layout_width="170dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/roundshape"
+        android:hint="1 الجولة"
+        android:background="@drawable/roundtextview"
         android:gravity="center_vertical"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/enter_discription_tv"
@@ -46,26 +49,29 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:gravity="clip_vertical"
         android:hint="ملاحظات"
+        android:textAlignment="viewStart"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/the_price_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/the_price_tv"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/distance_tv"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:hint="المسافة"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
+        android:textAlignment="viewStart"
         app:layout_constraintBottom_toBottomOf="@+id/the_price_tv"
         app:layout_constraintEnd_toStartOf="@+id/the_price_tv"
         app:layout_constraintHorizontal_bias="0.5"
@@ -75,13 +81,14 @@
 
     <EditText
         android:id="@+id/the_price_tv"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:hint="الجائز"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toStartOf="@+id/category_tv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/distance_tv"
@@ -89,13 +96,14 @@
 
     <EditText
         android:id="@+id/category_tv"
-        android:layout_width="110dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:hint="الفئة"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
+        android:textAlignment="viewStart"
         app:layout_constraintBottom_toBottomOf="@+id/the_price_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -127,7 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:checked="true"
-            android:text="Male"
+            android:text="@string/male"
             android:buttonTint="@color/lighttext"
             android:textColorLink="#BAB6B6" />
 
@@ -136,6 +144,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/lighttext"
-            android:text="Female" />
+            android:text="@string/female" />
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

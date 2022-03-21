@@ -15,6 +15,7 @@ data class UserDetailsResponse(
         val role: String,
         val user_email: String,
         val user_id: String,
-        val user_login: String
+        val user_login: String,
+        var subscription:String
     )
 }

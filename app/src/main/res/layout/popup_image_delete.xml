@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="112dp"
                 android:gravity="center"
-                android:text="Do you really want to delete these schedule?"
+                android:text="@string/Do_you_really_want_to_delete_these_schedule"
                 android:textSize="18sp" />
 
             <View

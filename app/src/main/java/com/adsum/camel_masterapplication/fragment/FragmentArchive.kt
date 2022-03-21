@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.adsum.camel_masterapplication.Activity.DashboardActivity
 import com.adsum.camel_masterapplication.Adapter.ArchiveAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
 import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.ArchiveData
 import com.adsum.camel_masterapplication.R
+import com.adsum.camel_masterapplication.databinding.ActivityDashboardBinding
 import com.adsum.camel_masterapplication.databinding.FragmentArchiveBinding
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -23,11 +25,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+@Suppress("UNREACHABLE_CODE")
 class FragmentArchive : Fragment() {
-
     private lateinit var binding: FragmentArchiveBinding
     private lateinit var historyAdapter: ArchiveAdapter
     private lateinit var rootView: View
+    private lateinit var dashboardBinding: ActivityDashboardBinding
 
     companion object {
         fun newInstance(
@@ -48,6 +51,7 @@ class FragmentArchive : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentArchiveBinding.inflate(inflater, container, false)
+//        dashboardBinding = ActivityDashboardBinding.inflate(LayoutInflater.from(requireContext()))
 
         init()
 
@@ -73,7 +77,13 @@ class FragmentArchive : Fragment() {
 //        }
 //        val adapter = context?.let { HistoryAdapter(it,users, this) }
 //        binding.historyRecyclerView.adapter = adapter
-//        return rootView
+//        return rootVie
+        childFragmentManager.addOnBackStackChangedListener {
+            val fr = childFragmentManager.findFragmentById(R.id.fm_archive)
+            if (fr is FragmentFromArchive){
+//                dashboardBinding.titlePage.visibility = View.GONE
+            }
+        }
     }
 
     private fun init() {
@@ -148,8 +158,8 @@ class FragmentArchive : Fragment() {
 //    }
 
     fun openFragment(fragment: Fragment?, name: String) {
-        val transaction = childFragmentManager.beginTransaction()
-        transaction?.replace(R.id.fm_archive, fragment!!)
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.framee, fragment!!)
         transaction?.addToBackStack(null)
         transaction?.commit()
     }

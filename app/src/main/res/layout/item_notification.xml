@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_pertanyaan"
+        android:backgroundTint="@color/white"
         app:cardBackgroundColor="#FFFF"
         app:cardCornerRadius="8dp"
-        app:contentPadding="10dp"
         android:foreground="?selectableItemBackground"
         android:clickable="true"
         tools:ignore="MissingConstraints"
@@ -23,7 +23,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_inner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/roundtextview"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_title"

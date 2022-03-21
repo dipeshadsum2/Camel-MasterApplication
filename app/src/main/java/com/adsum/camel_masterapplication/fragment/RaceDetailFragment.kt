@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.adsum.camel_masterapplication.Adapter.RaceDetailAdapter
@@ -20,9 +21,7 @@ import com.adsum.camel_masterapplication.Config.Constants
 import com.adsum.camel_masterapplication.Model.DeleteRaceDetailResponse
 import com.adsum.camel_masterapplication.Model.RaceDetailResponse
 import com.adsum.camel_masterapplication.R
-import com.adsum.camel_masterapplication.databinding.FragmentRaceDetailBinding
-import com.adsum.camel_masterapplication.databinding.FragmentUpdateDateBinding
-import com.adsum.camel_masterapplication.databinding.PopupDeleteBinding
+import com.adsum.camel_masterapplication.databinding.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -31,15 +30,19 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONObject
+import kotlin.properties.Delegates
 
 
 class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListener,
     UpdateDateFragment.UpdateDialogInterface {
 
     private lateinit var raceDetailBinding: FragmentRaceDetailBinding
-    private var updateDateBinding: FragmentUpdateDateBinding?=null
-    private lateinit var raceid:String
+    private lateinit var itemRaceDetailBinding: ItemRaceDetailBinding
+    var Role by Delegates.notNull<String>()
     private lateinit var raceDetailAdapter: RaceDetailAdapter
+
+
+
 
     //var treadingContentList: ArrayList<RaceDetailResponse.Data>? = ArrayList()
     private lateinit var rootView: View
@@ -68,18 +71,12 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
 
         raceDetailBinding = FragmentRaceDetailBinding.inflate(inflater, container, false)
         rootView = raceDetailBinding.root
+        Role=CommonFunctions.getPreference(activity,Constants.role,"").toString()
 
-        init()
         getData()
-
         return rootView
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_race_detail, container, false)
     }
 
-    private fun init() {
-
-    }
 
     private fun getData() {
         try {
@@ -109,8 +106,8 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
                                 response.toString(),
                                 RaceDetailResponse::class.java
                             )
-                           // treadingContentList?.addAll(res.data)
-                           // date = res.data
+                            // treadingContentList?.addAll(res.data)
+                            // date = res.data
                             context?.let {
                                 initRace(it, res.data)
                             }
@@ -129,7 +126,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
 
     private fun initRace(context: Context, raceList: ArrayList<RaceDetailResponse.Data>) {
 
-        raceDetailAdapter = RaceDetailAdapter(context, raceList, this)
+        raceDetailAdapter = RaceDetailAdapter(context, raceList, this, Role)
         raceDetailBinding.raceRecyclerView.adapter = raceDetailAdapter
 
     }
@@ -150,7 +147,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
 
     fun openFragment(fragment: Fragment?, name: String) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameLayout1, fragment!!)
+        transaction?.replace(R.id.fram, fragment!!)
         transaction?.addToBackStack(name)
         transaction?.commit()
     }
@@ -182,7 +179,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
         try {
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
                 var url:String = CamelConfig.WEBURL + CamelConfig.removeRaceList+raceid
-               // var url: String = "https://uaqcrc.com/wp-json/camel/v1/rmvracedetail"
+                // var url: String = "https://uaqcrc.com/wp-json/camel/v1/rmvracedetail"
                 Log.e("san", "DELETE:--" + url)
 //Progress start
                 CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
@@ -210,7 +207,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
                             )
 
                             if (res.status == 1) {
-                                CommonFunctions.showToast(activity, res.response)
+                                //CommonFunctions.showToast(activity, res.response)
                                 raceDetailAdapter.deleterace(position)
 
 
@@ -237,6 +234,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
         position: Int,
         raceid: String
     ) {
+
         var dialog = UpdateDateFragment.newInstance(raceList.raceId, position, this)
         dialog.show(
             requireFragmentManager(),
@@ -254,7 +252,7 @@ class RaceDetailFragment : Fragment(), RaceDetailAdapter.OnRaceDetailClickListen
 
     fun openFragment1(fragment: Fragment?, name: String) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.framee2, fragment!!)
+        transaction?.replace(R.id.fram, fragment!!)
         transaction?.addToBackStack(name)
         transaction?.commit()
     }

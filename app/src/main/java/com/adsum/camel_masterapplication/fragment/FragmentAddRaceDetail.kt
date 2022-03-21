@@ -40,6 +40,10 @@ class FragmentAddRaceDetail : Fragment() {
     var race_Id: Int = 0
     var count = 0
     var datamain: List<SpinnerCategory.Data>? = null
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+
+
+
     private var spinnerCategoryId: String = ""
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -59,7 +63,7 @@ class FragmentAddRaceDetail : Fragment() {
         getcategorylist()
 
         binding.getSpinnerCategory.setOnClickListener {
-            showBottomSheetDialog()
+            bottomSheetDialog.show()
         }
 
         binding.enterNumberTv.addTextChangedListener(object : TextWatcher {
@@ -97,17 +101,17 @@ class FragmentAddRaceDetail : Fragment() {
         val roundNo: TextView? = view?.findViewById(R.id.roundNo) as TextView?
         val male = view?.findViewById(R.id.maleButton) as RadioButton
         val gender = if (male.isChecked) {
-            "جعدان"
+            "Male"
         } else
-            "ابكار"
+            "Female"
         val distance: EditText? = view.findViewById(R.id.distance_tv) as EditText?
         val disc: EditText? = view.findViewById(R.id.enter_discription_tv) as EditText?
         val price: EditText? = view.findViewById(R.id.the_price_tv) as EditText?
         val category: EditText? = view.findViewById(R.id.category_tv) as EditText?
-        var count: Int = Integer.valueOf(binding.enterNumberTv.text.toString())
-        if (binding.enterNumberTv.text.isBlank()) {
-            count = 1
-        }
+//        var count: Int = Integer.valueOf(binding.enterNumberTv.text.toString())
+//        if (binding.enterNumberTv.text.isBlank()) {
+//            count = 1
+//        }
         when {
             categoryId.isEmpty() -> {
                 CommonFunctions.showToast(requireContext(), "Select Category")
@@ -161,8 +165,9 @@ class FragmentAddRaceDetail : Fragment() {
                             )
                             if (res.status == 1) {
                                 datamain = res.data
-                                Log.e("data", "DatMainSize:- " + datamain?.size.toString())
-                                Log.e("data", datamain.toString())
+//                                Log.e("data", "DatMainSize:- " + datamain?.size.toString())
+//                                Log.e("data", datamain.toString())
+                                showBottomSheetDialog()
                                 CommonFunctions.destroyProgressBar()
                             } else {
                                 CommonFunctions.destroyProgressBar()
@@ -203,7 +208,7 @@ class FragmentAddRaceDetail : Fragment() {
     }
 
     private fun showBottomSheetDialog() {
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(com.adsum.camel_masterapplication.R.layout.spinner_dialog)
         val done = bottomSheetDialog.findViewById<View>(R.id.done_text)
         val spinner: Spinner = bottomSheetDialog.findViewById<View>(R.id.spinner_list) as Spinner
@@ -234,7 +239,6 @@ class FragmentAddRaceDetail : Fragment() {
             spinner.adapter = adapter1
             adapter1?.notifyDataSetChanged()
         }
-        bottomSheetDialog.show()
     }
 
     private fun addRaceDetail(raceId1: String, roundNo: String, gender: String, distance: String, disc: String, price: String, category: String) {

@@ -2,6 +2,7 @@ package com.adsum.camel_masterapplication.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -102,9 +103,29 @@ class AddUserFragment : Fragment() {
 
     private fun addUser() {
         try {
+            var role=if (binding.switch1.isChecked){
+                "1"
+            }else{
+                "0"
+            }
+//            Log.e("tag","role:-"+role)
 
+            var Role = binding.roleSpinner.selectedItem.toString().trim { it <= ' ' }
+            var R = " "
+            when {
+                Role == "المسؤول" -> {
+                    R = "administrator"
+                }
+                Role == "المذيع" -> {
+                    R = "normal_user"
+                }
+                Role == "المشترك" -> {
+                    R = "subscriber"
+                }
+                else -> { }
+            }
+            Log.e("tag","R:-"+R)
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
-
                 var url: String = CamelConfig.WEBURL + CamelConfig.addUser
                 val mParams: HashMap<Any, Any> = HashMap()
                 mParams.put(
@@ -127,10 +148,13 @@ class AddUserFragment : Fragment() {
                     binding.etCamelNo.text.toString().trim { it <= ' ' })
                 mParams.put(
                     Constants.role,
-                    binding.roleSpinner.selectedItem.toString().trim { it <= ' ' })
+                    R)
+                mParams.put(
+                    Constants.subscription,
+                    role)
 
 
-                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+                CommonFunctions.createProgressBar(activity, getString(com.adsum.camel_masterapplication.R.string.please_wait))
 
                 val okHttpClient = OkHttpClient.Builder()
                     .addInterceptor(ChuckerInterceptor(requireActivity()))
@@ -180,7 +204,7 @@ class AddUserFragment : Fragment() {
     }
 
     private fun setupSpinner() {
-        val role = arrayOf("Subscriber", "User")
+        val role = arrayOf("المسؤول","المشترك","المذيع")
         val spinner = binding.roleSpinner
         val arrayAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, role)
         spinner.adapter = arrayAdapter
@@ -192,20 +216,15 @@ class AddUserFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-
 //                  Toast.makeText(
 //                    this@MainActivity,
 //                    getString(R.string.selected_item) + " " + role[position],
 //                    Toast.LENGTH_SHORT
 //                ).show()
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
-
         }
-
-
     }
 }

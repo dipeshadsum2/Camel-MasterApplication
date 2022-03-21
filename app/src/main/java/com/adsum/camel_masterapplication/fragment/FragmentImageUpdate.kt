@@ -210,7 +210,7 @@ class FragmentImageUpdate : Fragment() {
                         .addMultipartParameter(mParams)
                         .addHeaders("Authorization", ")H@MbQeThWmZq4t7")
                         .setTag(url)
-                        .setOkHttpClient(okHttpClient)
+//                        //
                         .setPriority(Priority.HIGH)
                         .build()
                         .getAsJSONObject(object : JSONObjectRequestListener {

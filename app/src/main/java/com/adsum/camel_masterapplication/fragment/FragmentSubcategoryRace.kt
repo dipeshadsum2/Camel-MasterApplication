@@ -3,6 +3,7 @@ package com.adsum.camel_masterapplication.fragment
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,6 +17,8 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.adsum.camel_masterapplication.Activity.DashboardActivity
+import com.adsum.camel_masterapplication.Activity.PdfViewActivity
 import com.adsum.camel_masterapplication.Adapter.SubCategoryRaceAdapter
 import com.adsum.camel_masterapplication.Config.CamelConfig
 import com.adsum.camel_masterapplication.Config.CommonFunctions
@@ -33,12 +36,11 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.google.gson.JsonArray
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import kotlin.math.log
 import kotlin.properties.Delegates
 
 
@@ -63,7 +65,7 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
     private var arrayAdapter: ArrayAdapter<String>? = null
     private lateinit var malelist: ArrayList<AkbarResp.Data>
     private lateinit var femalelist: ArrayList<AkbarResp.Data>
-    private var mixModel: ArrayList<MixModel>? = null
+    var Role by Delegates.notNull<String>()
     val malelist2 = ArrayList<String>()
     var malelisttemp = ArrayList<String>()
     var malelistID = ArrayList<String>()
@@ -77,6 +79,11 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
 //    var response1 = ArrayList<String>()
 //    private var response2: ArrayList<NoOfParticipateResponse.Data> = ArrayList()
     var listdata = ArrayList<ViewRoundList>()
+    private lateinit var printList :String
+    var data = JSONArray()
+    lateinit var arrayData : String
+    var dashboardActivity : DashboardActivity? = null
+
 
     companion object {
         fun newInstance(
@@ -109,10 +116,11 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dashboardActivity = (activity as DashboardActivity)
         fragmentSubcategoryRaceBinding =
             FragmentSubcategoryRaceBinding.inflate(inflater, container, false)
         popupDeleteBinding = PopupDeleteBinding.inflate(inflater, container, false)
-        popupCamelAddBinding = PopupCamelAddBinding.inflate(inflater,container,false)
+        popupCamelAddBinding = PopupCamelAddBinding.inflate(inflater, container, false)
         rootView = fragmentSubcategoryRaceBinding.root
         roundid = requireArguments().getInt(Constants.id)
         race_id = requireArguments().getInt(Constants.race_id)
@@ -122,14 +130,34 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
         from = requireArguments().getString(Constants.from)
         customization = requireArguments().getString(Constants.customization)
         roundname = requireArguments().getString(Constants.round_name)
+        Role=CommonFunctions.getPreference(activity, Constants.role, "").toString()
         malelist = ArrayList<AkbarResp.Data>()
         femalelist = ArrayList<AkbarResp.Data>()
-        fragmentSubcategoryRaceBinding.tvSubSex.text = gender
+        Log.e("id", "race = " + race_id)
+        Log.e("id", "round = " + roundid)
+
+       var g =""
+        if (gender == "Male") {
+            g = "جعدان"
+        } else {
+            g = "ابكار"
+        }
+        if (Role == "normal_user"){
+            fragmentSubcategoryRaceBinding.btnAddCamel.visibility = View.GONE
+            fragmentSubcategoryRaceBinding.tvCamelname.visibility = View.GONE
+        }
+        fragmentSubcategoryRaceBinding.tvSubSex.text = g
         fragmentSubcategoryRaceBinding.tvSubCostomization.text = customization
         fragmentSubcategoryRaceBinding.tvStrok.text = roundname
-        fragmentSubcategoryRaceBinding.tvRaceid.text = racename
+        fragmentSubcategoryRaceBinding.tvRaceid.text = race_id.toString() + ":" +racename
         userid = CommonFunctions.getPreference(context, Constants.ID, "").toString()
         init()
+        dashboardActivity!!.tvBtnPrint.setOnClickListener {
+            val intent = Intent(context, PdfViewActivity::class.java)
+            intent.putExtra("data", arrayData)
+            intent.putExtra("Name", racename)
+            startActivity(intent)
+        }
         return rootView
     }
 
@@ -146,7 +174,7 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
 //            .addQueryParameter(Constants.user_id, userid.toString())
                 .addHeaders(Constants.Authorization, Constants.Authkey)
                 .setTag(url)
-                .setOkHttpClient(okHttpClient)
+//                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
 //            .getAsJSONArray(object : JSONArrayRequestListener {
@@ -272,10 +300,11 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                     //   .addJSONObjectBody(data)
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
+                            listdata.clear()
                             Log.e("Tag", "response:-" + response)
                             CommonFunctions.destroyProgressBar()
                             var array: JSONArray = response!!.getJSONArray("data")
@@ -290,6 +319,7 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                                     for (j in 0..memberlistArray.length() - 1) {
                                         var item: JSONObject = memberlistArray.getJSONObject(j)
                                         var itemUser: JSONObject = item.getJSONObject("user")
+
                                         var arayItem = ViewRoundList()
                                         arayItem.rc_camel = item.getString("rc_camel")
                                         arayItem.rl_id = item.getString("rl_id")
@@ -304,6 +334,8 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                                     Log.e("San", "no membar  " + e)
                                 }
                             }
+//                            data = JSONArray(listdata)
+//                            Log.e("array", "dataSize = " + data.length())
 
                             subCategoryRaceAdapter =
                                 context?.let {
@@ -311,14 +343,16 @@ class FragmentSubcategoryRace : Fragment(), SubCategoryRaceAdapter.OnsubdeleteCl
                                         it,
                                         listdata,
                                         this@FragmentSubcategoryRace,
-                                        from.toString()
+                                        from.toString(), Role
                                     )
                                 }
                             fragmentSubcategoryRaceBinding.subRaceRecyclerView.adapter =
                                 subCategoryRaceAdapter
                             subCategoryRaceAdapter?.notifyDataSetChanged()
 
-                            Log.e("res", "res------" + array.length())
+                            val gson = Gson()
+                            arrayData = gson.toJson(listdata)
+                            Log.e("res...", "res------" + arrayData)
                             gender?.let {
                                 initMale(requireActivity(), it)
                             }

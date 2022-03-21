@@ -44,6 +44,8 @@ class FragmentFromSubcategory : Fragment(){
             raceId: Int,
             roundName: String,
             raceName: String,
+            type: String,
+            customization : String,
             position: Int
         ): FragmentFromSubcategory {
             val fragment = FragmentFromSubcategory()
@@ -52,6 +54,8 @@ class FragmentFromSubcategory : Fragment(){
             args.putInt(Constants.race_id, raceId)
             args.putString(Constants.round_name, roundName)
             args.putString(Constants.race_name, raceName)
+            args.putString(Constants.type, type)
+            args.putString(Constants.customization,customization)
             args.putInt(Constants.position, position)
             fragment.arguments = args
             return fragment
@@ -69,8 +73,11 @@ class FragmentFromSubcategory : Fragment(){
         userid = requireArguments().getInt("user_id").toString()
         roundname = requireArguments().getString(Constants.round_name)
         race_id = requireArguments().getInt(Constants.race_id)
+        gender = requireArguments().getString(Constants.type)
+        customization = requireArguments().getString(Constants.customization)
         racename = requireArguments().getString(Constants.race_name).toString()
-
+        binding.fragmentFromSubGender.text = gender
+        binding.fromSubCostumization.text = customization
         binding.raceIdFromSub.text = racename
         binding.roundNameFromSub.text = roundname
 
@@ -128,9 +135,9 @@ class FragmentFromSubcategory : Fragment(){
     private fun initFromSub(context: Context, subList: ParticipateInRaceRoundRes) {
         fromSubCategoryAdapter = FromSubCategoryAdapter(context,subList)
         binding.fromSubRc.adapter = fromSubCategoryAdapter
-        if (fromSubCategoryAdapter.itemCount == 0) {
-            CommonFunctions.showToast(context, "Data not found")
-        }
+//        if (fromSubCategoryAdapter.itemCount == 0) {
+//            CommonFunctions.showToast(context, "Data not found")
+//        }
     }
 
 }

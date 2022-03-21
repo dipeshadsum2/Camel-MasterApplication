@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,13 +37,15 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
     private lateinit var mainAkbarRes : ArrayList<AkbarResp.Data>
     private  var dataAkbarRes : ArrayList<AkbarResp.Data>? = null
     private lateinit var maleAdapter: MaleAdapter
-    private lateinit var malebinding: FragmentMailBinding
+    private lateinit var malebinding: FragmentMaleBinding
     private lateinit var alertPopupBinding: AlertPopupBinding
     private lateinit var addCamelPopupBinding: AddCamelPopupBinding
     private var popupDeleteBinding: PopupDeleteBinding? = null
     private lateinit var rootView: View
     private var user_id by Delegates.notNull<String>()
+    var subscription by Delegates.notNull<String>()
     var count: Int = 0
+    var sub = ""
 
     companion object {
         var resmain = MaleResponse()
@@ -64,12 +67,12 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
             savedInstanceState: Bundle?
     ): View? {
 
-        malebinding = FragmentMailBinding.inflate(inflater, container, false)
+        malebinding = FragmentMaleBinding.inflate(inflater, container, false)
         addCamelPopupBinding = AddCamelPopupBinding.inflate(LayoutInflater.from(context))
         rootView = malebinding.root
         popupDeleteBinding = PopupDeleteBinding.inflate(inflater, container, false)
         user_id = CommonFunctions.getPreference(activity, Constants.ID, "").toString()
-
+        subscription = CommonFunctions.getPreference(activity,Constants.subscription,"").toString()
 
         init()
         return rootView
@@ -110,9 +113,6 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
         val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(ChuckerInterceptor(requireActivity()))
                 .build()
-
-
-
         AndroidNetworking.get(url)
                 .addHeaders(Constants.Authorization, Constants.Authkey)
                 .addQueryParameter(Constants.camel, camelName)
@@ -144,9 +144,6 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                         CommonFunctions.showToast(context, anError.toString())
                     }
                 })
-        // }else{
-        //  CommonFunctions.showToast(activity,"alert 10 data")
-        // }
 
 
     }
@@ -231,15 +228,30 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                                     response.toString(),
                                     AkbarResp::class.java
                             )
+                            sub = res.Subscriber
                             if (res.status == 1) {
-
                                 mainAkbarRes  = res.data as ArrayList<AkbarResp.Data>
                                 // Log.e("san","mainAkbarRes:---"+mainAkbarRes)
                                 val filterlist = mainAkbarRes.filter  { it.rcGender == "Male" }
                                 //  Log.e("san","filterList:---"+filterlist)
                                 setadapterdata(filterlist)
                                 maleAdapter.notifyDataSetChanged()
+                                if (subscription == "0"){
+                                    malebinding.btnAddMaleCamel.visibility=View.GONE
+                                    malebinding.tvSurvey.visibility = View.GONE
+                                }else{
+                                    malebinding.btnAddMaleCamel.visibility=View.VISIBLE
+                                    malebinding.tvSurvey.visibility = View.VISIBLE
+                                }
                             }
+                            if (res.Subscriber == "0") {
+                                malebinding.btnAddMaleCamel.visibility=View.GONE
+                                malebinding.tvSurvey.visibility = View.GONE
+                            }else{
+                                malebinding.btnAddMaleCamel.visibility=View.VISIBLE
+                                malebinding.tvSurvey.visibility = View.VISIBLE
+                            }
+
                         }
                         override fun onError(anError: ANError?) {
                             CommonFunctions.destroyProgressBar()
@@ -248,16 +260,11 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                     })
         }
     }
-
-
-
     private fun setadapterdata(res: List<AkbarResp.Data>) {
-        maleAdapter = MaleAdapter(requireActivity(), res as ArrayList<AkbarResp.Data>,this)
+        maleAdapter = MaleAdapter(requireActivity(), res as ArrayList<AkbarResp.Data>,this,subscription,sub)
         malebinding.maleRecycle.adapter = maleAdapter
         count = maleAdapter.itemCount
     }
-
-
     override fun OndeleteClick(malelist: AkbarResp.Data, position: Int) {
         val dialog = activity?.let { Dialog(it) }
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -299,6 +306,7 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                         .build()
                         .getAsJSONObject(object : JSONObjectRequestListener {
                             override fun onResponse(response: JSONObject?) {
+                                Log.e("tag","delete res:-"+response)
                                 //Destroy Progressbar
                                 CommonFunctions.destroyProgressBar()
                                 var gson = Gson()
@@ -307,7 +315,7 @@ class MaleFragment : Fragment(), MaleAdapter.OndeleteClickListener {
                                         DeleteCamelResponse::class.java
                                 )
                                 if (res.status == 1) {
-                                    CommonFunctions.showToast(activity, res.response)
+                                    //CommonFunctions.showToast(activity, res.response)
                                     maleAdapter.DeleteMaleCamel(position)
                                 } else {
                                     CommonFunctions.showToast(activity, res.response)

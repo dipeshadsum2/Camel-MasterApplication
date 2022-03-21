@@ -64,11 +64,7 @@ class FragmentProfile : Fragment() {
             fragment.setArguments(args)
             return fragment
         }
-
-
     }
-
-
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -319,7 +315,11 @@ class FragmentProfile : Fragment() {
                             val res = gson.fromJson(
                                 response.toString(),
                                 ResponseProfile::class.java
-
+                            )
+                            CommonFunctions.setPreference(
+                                context,
+                                Constants.camelno,
+                                res.data.camelno
                             )
                             setData(res.data)
                         }

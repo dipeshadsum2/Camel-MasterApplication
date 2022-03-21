@@ -36,6 +36,7 @@
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10dp"
                 android:text=""
+                android:textAlignment="textEnd"
                 android:textColor="@color/lighttext"
                 android:textDirection="ltr"
                 android:textSize="@dimen/_15sp" />

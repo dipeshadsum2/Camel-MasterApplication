@@ -8,7 +8,9 @@ data class AkbarResp(
     @SerializedName("response")
     val response: String,
     @SerializedName("status")
-    val status: Int
+    val status: Int,
+    @SerializedName("Subscriber")
+    val Subscriber: String
 )
 {
     data class Data(

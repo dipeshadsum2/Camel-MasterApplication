@@ -41,10 +41,6 @@ class FragmentCategory : Fragment() {
         }
 
     }
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,8 +65,6 @@ class FragmentCategory : Fragment() {
 
     var datamain: List<CategoryNameResponse.Data>? = null
     private fun getcategorylist() {
-
-
                 var url: String = CamelConfig.WEBURL + CamelConfig.getcamelcategory
                 Log.e("response", url)
 

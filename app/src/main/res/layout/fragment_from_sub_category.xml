@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="race_id_from_sub"
                 android:textColor="@color/lighttext"
                 android:textSize="16sp"
@@ -41,6 +41,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/race_id_from_sub">
+
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/login_white"
+                    app:layout_constraintBottom_toTopOf="@+id/roundNameFromSub"
+                    app:layout_constraintEnd_toEndOf="@+id/simpleTableLayout"
+                    app:layout_constraintStart_toStartOf="@+id/simpleTableLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/simpleTableLayout" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/from_sub_rc"
@@ -102,7 +112,7 @@
                     android:id="@+id/roundNameFromSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:text="Roundname"
                     app:layout_constraintEnd_toEndOf="@+id/simpleTableLayout"
                     app:layout_constraintStart_toStartOf="@+id/simpleTableLayout"

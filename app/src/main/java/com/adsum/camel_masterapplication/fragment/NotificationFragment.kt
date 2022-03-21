@@ -73,7 +73,7 @@ class NotificationFragment : Fragment(), NotificationAdapter.OnNotificationClick
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
                 val url: String = CamelConfig.WEBURL + CamelConfig.get_notification
                 val data = JSONObject()
-                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+               // CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
                 val okHttpClient = OkHttpClient.Builder()
                         .addInterceptor(ChuckerInterceptor(requireActivity()))
                         .build()
@@ -101,7 +101,7 @@ class NotificationFragment : Fragment(), NotificationAdapter.OnNotificationClick
                                                 res.data[i].is_read = "1"
                                                 updateNotification()
                                             }else {
-                                                Toast.makeText(activity,"Already read",Toast.LENGTH_SHORT).show()
+                                                //Toast.makeText(activity,"Already read",Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                     } else {

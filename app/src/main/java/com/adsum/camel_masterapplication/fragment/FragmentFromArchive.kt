@@ -114,8 +114,8 @@ class FragmentFromArchive : Fragment(), ArchiveFromMonthAdapter.OnItemClickListe
     }
 
     fun openFragment(fragment: Fragment?) {
-        val transaction = childFragmentManager.beginTransaction()
-        transaction?.replace(R.id.sub_frame, fragment!!)
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.framee, fragment!!)
         transaction?.addToBackStack(null)
         transaction?.commit()
     }
@@ -130,6 +130,8 @@ class FragmentFromArchive : Fragment(), ArchiveFromMonthAdapter.OnItemClickListe
                 archiveList.id.toInt(),
                 archiveList.race_id.toInt(),
                 archiveList.round_name, racename,
+                archiveList.type,
+                archiveList.customization,
                 position
             )
         )

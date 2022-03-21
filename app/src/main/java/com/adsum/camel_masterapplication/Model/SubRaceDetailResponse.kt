@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class SubRaceDetailResponse(
-    @SerializedName("data") val `data`: List<Data> = listOf(),
+    @SerializedName("data") val `data`: List<Data> ,
     @SerializedName("response") val response: String = "",
     @SerializedName("status") val status: Int
 ){

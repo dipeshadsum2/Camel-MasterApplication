@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="112dp"
                 android:gravity="center"
-                android:text="Race schedule inserted successfully"
+                android:text="@string/raceschedulepopup"
                 android:textSize="18sp" />
 
             <View

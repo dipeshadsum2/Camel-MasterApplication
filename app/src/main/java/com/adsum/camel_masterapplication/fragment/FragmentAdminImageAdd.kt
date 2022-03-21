@@ -203,7 +203,7 @@ class FragmentAdminImageAdd : Fragment() {
                     .addHeaders("Authorization", ")H@MbQeThWmZq4t7")
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {

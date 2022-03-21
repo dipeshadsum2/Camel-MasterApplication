@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,9 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
     private lateinit var addCamelPopupBinding: AddCamelPopupBinding
     private var popupDeleteBinding: PopupDeleteBinding? = null
     private var user_id by Delegates.notNull<String>()
+    var subscription by Delegates.notNull<String>()
     var count: Int = 0
+    var sub = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +67,10 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
         popupDeleteBinding = PopupDeleteBinding.inflate(inflater, container, false)
 //        presenter = MaleFemale()
         user_id = CommonFunctions.getPreference(activity, Constants.ID, "").toString()
-        getdata()
+        subscription = CommonFunctions.getPreference(activity,Constants.subscription,"").toString()
+
         init()
+        getdata()
         return rootView
     }
 
@@ -130,7 +135,6 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
     }
 
     private fun init() {
-
         try {
             getdata()
             var d = onCreateDialog()
@@ -188,7 +192,6 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
         if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
             // rc_id = CommonFunctions.getPreference(context, Constants.ID, "").toString()
             val url: String = CamelConfig.WEBURL + CamelConfig.malelist + user_id
-
 //Progress start
             CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 
@@ -212,8 +215,8 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
                             CampleResp::class.java
 
                         )
+                        sub = res.Subscriber
                         if (res.status == 1) {
-
                                 mainAkbarRes = res.data as ArrayList<CampleResp.Data>
                                 val filterlist = mainAkbarRes.filter  { it.rcGender == "Female" }
 
@@ -221,6 +224,20 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
                                 setadapterdata(filterlist)
                                 femaleAdapter.notifyDataSetChanged()
 
+                            if (subscription == "0"){
+                                binding.btnAddFemaleCamel.visibility=View.GONE
+                                binding.tvFsurvey.visibility = View.GONE
+                            }else{
+                                binding.btnAddFemaleCamel.visibility=View.VISIBLE
+                                binding.tvFsurvey.visibility = View.VISIBLE
+                            }
+                        }
+                        if (res.Subscriber == "0"){
+                            binding.btnAddFemaleCamel.visibility=View.GONE
+                            binding.tvFsurvey.visibility = View.GONE
+                        } else{
+                            binding.btnAddFemaleCamel.visibility=View.VISIBLE
+                            binding.tvFsurvey.visibility = View.VISIBLE
                         }
                     }
 
@@ -234,7 +251,7 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
 
 
     private fun setadapterdata(res: List<CampleResp.Data>) {
-        femaleAdapter = FemaleAdapter(requireActivity(), res as ArrayList<CampleResp.Data>,this)
+        femaleAdapter = FemaleAdapter(requireActivity(), res as ArrayList<CampleResp.Data>,this,subscription,sub)
         binding.femaleRecycle.adapter = femaleAdapter
         count = femaleAdapter.itemCount
     }
@@ -248,9 +265,7 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val Done = dialog.findViewById(R.id.tv_deletecamel) as TextView
         val cancel = dialog.findViewById(R.id.tv_cancelcamel) as TextView
-//        body.text = title
-//        val yesBtn = dialog.findViewById(R.id.yesBtn) as Button
-//        val noBtn = dialog.findViewById(R.id.noBtn) as TextView
+
         Done.setOnClickListener {
             DeleteCamel1(femaleList.rcId.toInt(),position)
             dialog.dismiss()
@@ -265,6 +280,7 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
 
             if (activity?.let { CommonFunctions.checkConnection(it) } == true) {
                 var url: String = CamelConfig.WEBURL + CamelConfig.removeCamel + id
+                Log.e("tag","url:-"+url)
 //Progress start
                 CommonFunctions.createProgressBar(context, getString(R.string.please_wait))
 
@@ -288,8 +304,9 @@ class FemaleFragment: Fragment(), FemaleAdapter.OnfedeleteClickListener{
 
                             )
                             if(res.status == 1){
-                                CommonFunctions.showToast(activity, res.response)
+                                //CommonFunctions.showToast(activity, res.response)
                                 femaleAdapter.DeleteFemaleCamel(position)
+
                             }else{
                                 CommonFunctions.showToast(activity, res.response)
                             }

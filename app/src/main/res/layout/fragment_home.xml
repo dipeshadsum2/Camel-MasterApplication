@@ -42,21 +42,21 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_camel"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginEnd="8dp"
-                    android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/image_profile"
@@ -64,10 +64,10 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_camel"
-                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/icon" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                             android:gravity="center"
                             android:text="@string/camel_profile"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/image_profile" />
@@ -99,21 +99,21 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_user"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_profile"
@@ -133,7 +133,7 @@
                             android:gravity="center"
                             android:text="@string/user_profile"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
@@ -171,21 +171,23 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_notify"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_notification"
@@ -205,7 +207,7 @@
                             android:gravity="center"
                             android:text="@string/notification"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_notification" />
@@ -243,21 +245,23 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_participant"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_participant"
@@ -275,9 +279,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/participate_in_race_round"
+                            android:text="@string/participate_category"
                             android:textColor="@color/lighttext"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_participant" />
@@ -310,21 +314,22 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_contolpanel"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_controlpanel"
@@ -332,11 +337,11 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:src="@drawable/control_panel_ic"
-                            android:tint="@color/icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="MissingConstraints" />
+                            tools:ignore="MissingConstraints"
+                            app:tint="@color/icon" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -344,7 +349,7 @@
                             android:gravity="center"
                             android:text="@string/control_panel"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_controlpanel" />
@@ -367,21 +372,21 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_archive"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/white"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_raceArchieve"
@@ -401,7 +406,7 @@
                             android:gravity="center"
                             android:text="@string/race_archive"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_raceArchieve" />
@@ -438,17 +443,18 @@
                     android:layout_width="180dp"
                     android:layout_height="100dp"
                     android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
+                        android:padding="10dp">
 
                         <ImageView
                             android:id="@+id/iv_scedule"
@@ -466,9 +472,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/race_schedule"
+                            android:text="@string/title_schedule"
                             android:textColor="@color/lighttext"
-                            android:textSize="18dp"
+                            android:textSize="@dimen/_20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_scedule" />
@@ -505,10 +511,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/white"
-                    app:cardCornerRadius="10dp"
+                    app:cardCornerRadius="8dp"
                     app:cardElevation="5dp"
                     app:cardMaxElevation="9dp"
-                    app:contentPadding="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -516,10 +521,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/roundtextview"
                         android:gravity="center"
+                        android:padding="24dp"
                         android:text="@string/terms_condition"
                         android:textColor="@color/lighttext"
-                        android:textSize="18dp" />
+                        android:textSize="@dimen/_20sp" />
 
 
                 </androidx.cardview.widget.CardView>

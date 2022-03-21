@@ -3,6 +3,7 @@ package com.adsum.camel_masterapplication.Config
 object Constants {
 
     val logintime="logintime"
+    val subscription="subscription"
     val isfromrace="isfromrace"
     val from="from"
     val name_of_participant="name_of_participant"

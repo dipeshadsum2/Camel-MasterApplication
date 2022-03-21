@@ -9,7 +9,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,17 +23,14 @@
                 android:id="@+id/tv_raceid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5dp"
-                android:layout_marginRight="@dimen/_5dp"
+                android:layout_marginStart="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="@dimen/_10dp"
-                android:paddingTop="@dimen/_10dp"
+                android:paddingTop="@dimen/_4dp"
                 android:paddingRight="@dimen/_10dp"
-                android:paddingBottom="@dimen/_10dp"
                 android:text="@string/title"
                 android:textColor="@color/lighttext"
                 android:textSize="17sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,8 +47,13 @@
                     android:id="@+id/simpleTableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
                     android:background="@color/colorPrimaryDark"
-                    android:stretchColumns="*">
+                    android:stretchColumns="*"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TableRow
 
@@ -119,13 +121,12 @@
                 android:id="@+id/tv_camelname"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/round_layout"
                 android:gravity="center"
-                android:hint=" اختيار"
-                android:paddingRight="4dp"
+                android:hint="@string/selection"
                 app:layout_constraintEnd_toStartOf="@+id/btn_add_camel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_camelname" />
@@ -150,20 +151,21 @@
                 android:id="@+id/btn_add_camel"
                 android:layout_width="@dimen/_120dp"
                 android:layout_height="@dimen/_35dp"
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_marginRight="@dimen/_15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/red_layout"
-                android:text="@string/Addi_camel"
+                android:text="@string/add_camel_category"
                 android:textColor="@color/login_white"
                 android:textSize="@dimen/_12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_camelname"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_camelname" />
+                app:layout_constraintTop_toTopOf="@+id/tv_camelname" />
 
             <TextView
                 android:id="@+id/tv_strok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif-medium"
                 android:lines="1"
                 android:text="@string/strock"
@@ -178,7 +180,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/_5dp"
-                android:layout_marginTop="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_5dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"

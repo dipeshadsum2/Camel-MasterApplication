@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.adsum.camel_masterapplication"
-        minSdk 23
+        minSdk 22
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -69,4 +69,12 @@ dependencies {
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.4.0"
 
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.4.1"
+
+    implementation 'com.itextpdf:itextpdf:5.0.6'
+
+    implementation 'com.akexorcist:snap-time-picker:1.0.3'
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.7'
+
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

@@ -6,16 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.FragmentNoOfParticipate"
     android:background="@color/colorPrimaryDark">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_categoryDetails"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_10dp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_noofparticipate"
-        />
+        tools:listitem="@layout/item_noofparticipate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

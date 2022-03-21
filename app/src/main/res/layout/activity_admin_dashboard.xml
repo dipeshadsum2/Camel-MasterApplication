@@ -14,6 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
@@ -52,7 +53,7 @@
                 android:id="@+id/title_image"
                 android:layout_width="@dimen/_25dp"
                 android:layout_height="@dimen/_25dp"
-                android:layout_marginStart="@dimen/_6dp"
+                android:layout_marginStart="4dp"
                 android:background="@color/transparent"
                 android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -66,12 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:text="Back"
+                android:text="@string/title_home"
                 android:textColor="@color/Black"
 
-                android:textSize="@dimen/_16dp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/title_image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -81,9 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/title_home"
+                android:text="@string/title_control"
                 android:textColor="@color/Black"
-                android:textSize="@dimen/_20dp"
+                android:textSize="@dimen/_18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +140,7 @@
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -158,8 +156,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="32dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -171,7 +168,6 @@
                         android:id="@+id/cl_first"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="150dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -206,9 +202,9 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:padding="@dimen/_10dp"
-                                    android:text="@string/user_detail"
+                                    android:text="@string/ud"
                                     android:textColor="@color/lighttext"
-                                    android:textSize="@dimen/_25dp"
+                                    android:textSize="@dimen/_20sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     tools:ignore="SpUsage" />
@@ -256,9 +252,9 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:padding="@dimen/_10dp"
-                                    android:text="@string/camel_detail"
+                                    android:text="@string/camel_list"
                                     android:textColor="@color/lighttext"
-                                    android:textSize="@dimen/_25dp"
+                                    android:textSize="@dimen/_20sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     tools:ignore="SpUsage" />
@@ -308,7 +304,7 @@
                                     android:padding="@dimen/_10dp"
                                     android:text="@string/race_detail"
                                     android:textColor="@color/lighttext"
-                                    android:textSize="@dimen/_25dp"
+                                    android:textSize="@dimen/_20sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     tools:ignore="SpUsage" />
@@ -358,7 +354,7 @@
                                     android:padding="@dimen/_10dp"
                                     android:text="@string/race_schedule"
                                     android:textColor="@color/lighttext"
-                                    android:textSize="@dimen/_25dp"
+                                    android:textSize="@dimen/_20sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     tools:ignore="SpUsage" />

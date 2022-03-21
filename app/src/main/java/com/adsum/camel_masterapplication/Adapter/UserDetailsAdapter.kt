@@ -42,7 +42,8 @@ class UserDetailsAdapter(var ctx: Context, var list: ArrayList<UserDetailsRespon
         val tvCamelno: TextView = itemView.findViewById(R.id.tv_camelno)
         val ivDelete: ImageView = itemView.findViewById(R.id.iv_delete)
         val ivLogout: ImageView = itemView.findViewById(R.id.iv_logout)
-        val image: ImageView = itemView.findViewById(R.id.iv_blockUnblock)
+        val image: Switch = itemView.findViewById(R.id.switch1)
+        val ivsubscription:Switch=itemView.findViewById(R.id.switch_subscription)
 
 
         fun bind(
@@ -58,6 +59,7 @@ class UserDetailsAdapter(var ctx: Context, var list: ArrayList<UserDetailsRespon
             ivLogout.setOnClickListener{
                 clickListener.logoutuser(userdetail,position)
             }
+
 
         }
     }
@@ -77,21 +79,48 @@ class UserDetailsAdapter(var ctx: Context, var list: ArrayList<UserDetailsRespon
         holder.tvMobileNo.text = details.mobile_no
         holder.tvCamelno.text = details.camel_no
 
-        if (details.block_user.equals("1")){
-            holder.image.setImageResource(R.drawable.ic_baseline_radio_button_checked_24)
+        if (details.block_user.equals("0")){
+           holder.image.isChecked=true
         }else{
-            holder.image.setImageResource(R.drawable.ic_baseline_radio_button_unchecked_24)
+            holder.image.isChecked=false
         }
+        holder.image.setOnClickListener {
 
-        holder.image.setOnClickListener{
-            if (details.block_user.equals("1")){
+            if (details.block_user.equals("1")) {
                 list[position].block_user = "0"
-            }else{
+            } else {
                 list[position].block_user = "1"
             }
-            userDetailClickListener.blockuser(details,position,list[position].block_user)
+            userDetailClickListener.blockuser(details, position, list[position].block_user)
             notifyDataSetChanged()
         }
+//
+//        holder.image.setOnClickListener{
+//            if (details.block_user.equals("1")){
+//                list[position].block_user = "0"
+//            }else{
+//                list[position].block_user = "1"
+//            }
+//            userDetailClickListener.blockuser(details,position,list[position].block_user)
+//            notifyDataSetChanged()
+//        }
+
+        if (details.subscription.equals("1")){
+            holder.ivsubscription.isChecked=true
+        }else{
+            holder.ivsubscription.isChecked=false
+        }
+        holder.ivsubscription.setOnClickListener{
+            if (details.subscription.equals("1")){
+                list[position].subscription="0"
+            }
+            else{
+                list[position].subscription="1"
+            }
+            userDetailClickListener.subscription(details,position,list[position].subscription)
+            notifyDataSetChanged()
+        }
+
 
         userDetailClickListener.let { holder.bind(details, position, it,) }
 
@@ -111,6 +140,7 @@ class UserDetailsAdapter(var ctx: Context, var list: ArrayList<UserDetailsRespon
         fun OnClick(userdetail: UserDetailsResponse.Data, position: Int)
         fun logoutuser(userdetail: UserDetailsResponse.Data, position: Int)
         fun blockuser(userdetail: UserDetailsResponse.Data, position: Int,status: String)
+        fun subscription(userdetail: UserDetailsResponse.Data,position: Int,subscription: String)
     }
 
 }

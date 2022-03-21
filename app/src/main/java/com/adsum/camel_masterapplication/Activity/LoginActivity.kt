@@ -32,7 +32,6 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var activityloginBinding: ActivityLoginBinding
     private lateinit var rootView: View
 
@@ -97,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
             if (CommonFunctions.checkConnection(this)) {
 
                 val url: String = CamelConfig.WEBURL + CamelConfig.login
+                Log.e("tag","url:-"+url)
                 val mParams: HashMap<String, String> = HashMap()
 
                 CommonFunctions.createProgressBar(this, getString(R.string.please_wait))
@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
                         activityloginBinding.edtPassword.text.toString().trim { it <= ' ' })
                     .setTag(url)
                     .setPriority(Priority.HIGH)
-                    .setOkHttpClient(okHttpClient)
+//                    .setOkHttpClient(okHttpClient)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         @SuppressLint("SimpleDateFormat")
@@ -179,12 +179,18 @@ class LoginActivity : AppCompatActivity() {
                                         Constants.logintime,
                                         res.data.last_login_time_timestamp_format
                                     )
+                                    CommonFunctions.setPreference(
+                                        applicationContext,
+                                        Constants.subscription,
+                                        res.data.subscription
+                                    )
 //                                    CommonFunctions.setPreference(
 //                                        applicationContext, Constants.userdata, gson.toJson(
 //                                            response
 //                                        )
 //                                    )
                                     DashboardActivity.startActivity(this@LoginActivity)
+                                    finish()
                                 } else {
                                     CommonFunctions.showToast(this@LoginActivity, res.response)
                                 }

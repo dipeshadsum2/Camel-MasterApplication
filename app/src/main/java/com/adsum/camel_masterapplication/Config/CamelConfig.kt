@@ -25,6 +25,7 @@ object CamelConfig {
     var removeCamel="delCamel?id="
     val getcamelcategory = "getcategory"
     var addUser = "adduser"
+    var blockUser="block_user"
     val participateinrace = "participate_in_Race"
     val ViewRoundMemberlisting = "viewRoundMemberlisting"
     var removecamel="removeRoundMemberOption?rl_id="
@@ -38,4 +39,5 @@ object CamelConfig {
     var addRaceDetail = "addracedetail"
     var updateNotification = "update_notification"
     val listofuser="list_of_user"
+    var change_subscrition_status="change_subscrition_status"
 }

@@ -29,10 +29,7 @@ class FragmentCamel: Fragment(){
             fragment.setArguments(args)
             return fragment
         }
-
-
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,11 +40,6 @@ class FragmentCamel: Fragment(){
         val fragmentAdapter = MyPagerAdapter(childFragmentManager,requireActivity(), )
         viewPager.adapter = fragmentAdapter
         tabs.setupWithViewPager(viewPager)
-
-
-
-
-
         return view
     }
 

@@ -31,9 +31,9 @@ class MyPagerAdapter(fm: FragmentManager , context: Context) : FragmentPagerAdap
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> context.getString(R.string.crumple)
+            0 -> context.getString(R.string.abkar)
             else -> {
-                return context.getString(R.string.abkar)
+                return context.getString(R.string.crumple)
             }
         }
     }

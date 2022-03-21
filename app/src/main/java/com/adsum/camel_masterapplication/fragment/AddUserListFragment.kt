@@ -125,7 +125,7 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
 
                 Log.e("san", "url:--" + url)
 //Progress start
-                CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
+               // CommonFunctions.createProgressBar(activity, getString(R.string.please_wait))
 
                 val okHttpClient = OkHttpClient.Builder()
                     .addInterceptor(ChuckerInterceptor(requireActivity()))
@@ -152,7 +152,7 @@ class AddUserListFragment : Fragment(),AddUserListAdapter.OnCheckedChangeListene
 //                                SelectedUserResponse::class.java
 //                            )
                             if (response?.getInt(Constants.status)==1) {
-                                CommonFunctions.showToast(activity, response.getString(Constants.response))
+                               // CommonFunctions.showToast(activity, response.getString(Constants.response))
                                 getUser()
 
                                // raceDetailAdapter.deleterace(position)

@@ -12,9 +12,9 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:gravity="center"
-        android:hint="عدد"
+        android:hint="أضف الجولة"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,29 +25,35 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/roundshape"
-        android:gravity="center"
+        android:background="@drawable/roundtextview"
+        android:textAlignment="viewStart"
+        android:gravity="center_vertical"
         android:hint="اختيار الفئة"
+        android:paddingStart="4dp"
+        android:paddingRight="4dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/enter_number_tv"
         app:layout_constraintEnd_toStartOf="@+id/enter_number_tv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/enter_number_tv" />
+        app:layout_constraintTop_toTopOf="@+id/enter_number_tv"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/raceNameText"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/roundshape"
+        android:background="@drawable/roundtextview"
         android:gravity="center_vertical"
         android:hint="سم السباق"
         android:paddingStart="4dp"
         android:paddingRight="4dp"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="@+id/enter_number_tv"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/get_spinner_category"
-        app:layout_constraintTop_toBottomOf="@+id/get_spinner_category" />
+        app:layout_constraintTop_toBottomOf="@+id/get_spinner_category"
+        tools:ignore="RtlCompat" />
 
     <View
         android:id="@+id/view2"
